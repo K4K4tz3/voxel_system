@@ -1,0 +1,6 @@
+src/*.os
+.godot/
+/android/
+
+project/bin/*.uid
+project/bin/*.so
