@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dg5o6qxpjrapa"]
+
+[node name="Node3D" type="Node3D" unique_id=303995278]
+
+[node name="Cube_Generatable" type="Cube_Generatable" parent="." unique_id=2101259290]

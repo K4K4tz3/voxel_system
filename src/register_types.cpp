@@ -1,5 +1,6 @@
 #include "register_types.h"
 
+#include "cube_generatable.h"
 #include "gdexample.h"
 
 #include <gdextension_interface.h>
@@ -14,6 +15,7 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
   }
 
   GDREGISTER_CLASS(GDExample);
+  GDREGISTER_CLASS(Cube_Generatable);
 }
 
 void uninitialize_example_module(ModuleInitializationLevel p_level) {
