@@ -66,7 +66,7 @@ void Cube_Generatable::build_cube() {
   Ref<StandardMaterial3D> material;
   material.instantiate();
   material->set_flag(BaseMaterial3D::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
-  material->set_cull_mode(BaseMaterial3D::CULL_DISABLED); // draw both faces
+  material->set_cull_mode(BaseMaterial3D::CULL_BACK); // draw both faces
   mesh->surface_set_material(0, material);
 
   m_mesh_instance->set_mesh(mesh);

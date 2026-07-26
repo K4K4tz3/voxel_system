@@ -17,10 +17,10 @@ private:
   MeshInstance3D *m_mesh_instance = nullptr;
 
   const PackedVector3Array M_VERTICES = {
-      Vector3(-1.0, 1.0, 0.0),  // top right
-      Vector3(1.0, 1.0, 0.0),   // top left
-      Vector3(1.0, -1.0, 0.0),  // bot left
-      Vector3(-1.0, -1.0, 0.0), // bot right
+      Vector3(-1.0, 1.0, 0.0),  // top left
+      Vector3(1.0, 1.0, 0.0),   // top right
+      Vector3(1.0, -1.0, 0.0),  // bot right
+      Vector3(-1.0, -1.0, 0.0), // bot left
   };
 
   const std::vector<int> M_VERT_ORDER = {0, 2, 3, 0, 1, 2};
