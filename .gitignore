@@ -4,3 +4,5 @@ src/*.os
 
 project/bin/*.uid
 project/bin/*.so
+/compile_commands.json
+/.sconsign.dblite
