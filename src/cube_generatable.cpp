@@ -10,8 +10,8 @@ void Cube_Generatable::_bind_methods() {
 }
 
 Cube_Generatable::Cube_Generatable() {
-  mesh_instance = memnew(MeshInstance3D);
-  add_child(mesh_instance);
+  m_mesh_instance = memnew(MeshInstance3D);
+  add_child(m_mesh_instance);
 }
 
 Cube_Generatable::~Cube_Generatable() {}
@@ -21,9 +21,11 @@ void Cube_Generatable::_ready() { build_cube(); }
 void Cube_Generatable::build_cube() {
   // 1. Vertex positions (counter-clockwise winding = front-facing)
   PackedVector3Array vertices;
-  vertices.push_back(Vector3(0.0, 1.0, 0.0));   // top
-  vertices.push_back(Vector3(-1.0, -1.0, 0.0)); // bottom-left
-  vertices.push_back(Vector3(1.0, 1.0, 0.0));   // bottom-right
+  for (int i = 0; i < 3; i += 3) {
+    vertices.push_back(get_vertice_coords(m_vert_order[i + 0]));
+    vertices.push_back(get_vertice_coords(m_vert_order[i + 1]));
+    vertices.push_back(get_vertice_coords(m_vert_order[i + 2]));
+  }
 
   // 2. Normals - all face +Z so the flat triangle is lit from the front-facing
   PackedVector3Array normals;
@@ -63,5 +65,5 @@ void Cube_Generatable::build_cube() {
   material->set_cull_mode(BaseMaterial3D::CULL_DISABLED); // draw both faces
   mesh->surface_set_material(0, material);
 
-  mesh_instance->set_mesh(mesh);
+  m_mesh_instance->set_mesh(mesh);
 }
