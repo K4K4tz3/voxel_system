@@ -16,16 +16,17 @@ class Cube_Generatable : public Node3D {
 private:
   MeshInstance3D *m_mesh_instance = nullptr;
 
-  const PackedVector3Array m_vertices = {
+  const PackedVector3Array M_VERTICES = {
       Vector3(-1.0, 1.0, 0.0),  // top right
       Vector3(1.0, 1.0, 0.0),   // top left
       Vector3(1.0, -1.0, 0.0),  // bot left
       Vector3(-1.0, -1.0, 0.0), // bot right
   };
 
-  const std::vector<int> m_vert_order = {0, 2, 3};
+  const std::vector<int> M_VERT_ORDER = {0, 2, 3, 0, 1, 2};
+  const int M_VERT_COUNT = M_VERT_ORDER.size();
 
-  Vector3 get_vertice_coords(const int a_index) { return m_vertices[a_index]; };
+  Vector3 get_vertice_coords(const int a_index) { return M_VERTICES[a_index]; };
 
 protected:
   static void _bind_methods();

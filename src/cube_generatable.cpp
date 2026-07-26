@@ -21,29 +21,33 @@ void Cube_Generatable::_ready() { build_cube(); }
 void Cube_Generatable::build_cube() {
   // 1. Vertex positions (counter-clockwise winding = front-facing)
   PackedVector3Array vertices;
-  for (int i = 0; i < 3; i += 3) {
-    vertices.push_back(get_vertice_coords(m_vert_order[i + 0]));
-    vertices.push_back(get_vertice_coords(m_vert_order[i + 1]));
-    vertices.push_back(get_vertice_coords(m_vert_order[i + 2]));
+  for (int i = 0; i < M_VERT_COUNT; i += 3) {
+    vertices.push_back(get_vertice_coords(M_VERT_ORDER[i + 0]));
+    vertices.push_back(get_vertice_coords(M_VERT_ORDER[i + 1]));
+    vertices.push_back(get_vertice_coords(M_VERT_ORDER[i + 2]));
   }
 
   // 2. Normals - all face +Z so the flat triangle is lit from the front-facing
   PackedVector3Array normals;
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < M_VERT_COUNT; i++) {
     normals.push_back(Vector3(0.0, 0.0, 1.0));
   }
 
   // 3. UVs (optional, for texturing)
   PackedVector2Array uvs;
-  uvs.push_back(Vector2(0.5, 0.0));
-  uvs.push_back(Vector2(0.0, 1.0));
-  uvs.push_back(Vector2(1.0, 1.0));
+  for (int i = 0; i < M_VERT_COUNT; i += 3) {
+    uvs.push_back(Vector2(0.5, 0.0));
+    uvs.push_back(Vector2(0.0, 1.0));
+    uvs.push_back(Vector2(1.0, 1.0));
+  }
 
   // 4. Vertex Colors (optional)
   PackedColorArray colors;
-  colors.push_back(Color(1, 0, 0));
-  colors.push_back(Color(0, 1, 0));
-  colors.push_back(Color(0, 0, 1));
+  for (int i = 0; i < M_VERT_COUNT; i += 3) {
+    colors.push_back(Color(1, 0, 0));
+    colors.push_back(Color(0, 1, 0));
+    colors.push_back(Color(0, 0, 1));
+  }
 
   // 5. Pack into ARRAY_MAX-sized ARRAY_MAX-sized
   Array arrays;
