@@ -5,6 +5,7 @@
 [node name="Cube_Generatable" type="Cube_Generatable" parent="." unique_id=2101259290]
 
 [node name="Voxel_Interactor" type="Voxel_Interactor" parent="." unique_id=1297117954]
+target_path = NodePath("../Cube_Generatable")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.872934)
 
 [node name="Camera3D" type="Camera3D" parent="Voxel_Interactor" unique_id=469799563]
