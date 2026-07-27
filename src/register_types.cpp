@@ -2,6 +2,7 @@
 
 #include "cube_generatable.h"
 #include "gdexample.h"
+#include "voxel_interactor.h"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/defs.hpp>
@@ -16,6 +17,7 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
 
   GDREGISTER_CLASS(GDExample);
   GDREGISTER_CLASS(Cube_Generatable);
+  GDREGISTER_CLASS(Voxel_Interactor);
 }
 
 void uninitialize_example_module(ModuleInitializationLevel p_level) {
