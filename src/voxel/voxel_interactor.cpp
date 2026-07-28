@@ -33,11 +33,17 @@ void Voxel_Interactor::_ready() {
 
 void Voxel_Interactor::_process() {
   // UtilityFunctions::print(m_mouse_motion.x, m_mouse_motion.y);
+  UtilityFunctions::print((float)m_target->get_global_rotation_degrees().y);
 
   if (m_interact) {
     Vector3 rotation = m_target->get_rotation();
 
-    rotation.x += m_mouse_motion.y * mouse_sensitivity;
+    float rotation_y = m_target->get_global_rotation_degrees().y;
+    if (-90 < rotation_y && rotation_y < 90)
+      rotation.x += m_mouse_motion.y * mouse_sensitivity;
+    else
+      rotation.x -= m_mouse_motion.y * mouse_sensitivity;
+
     rotation.y += m_mouse_motion.x * mouse_sensitivity;
 
     m_target->set_rotation(rotation);
