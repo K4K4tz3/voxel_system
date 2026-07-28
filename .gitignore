@@ -1,4 +1,5 @@
 src/*.os
+src/*/*.os
 .godot/
 /android/
 
