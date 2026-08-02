@@ -16,6 +16,7 @@ sources = []
 
 for root, dirs, files in os.walk("src"):
     for file in files:
+        print(f"Adding: {file}")
         if file.endswith(".cpp"):
             sources.append(os.path.join(root, file))
 
