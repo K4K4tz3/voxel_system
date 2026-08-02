@@ -1,0 +1,6 @@
+[gd_resource type="StyleBoxTexture" format=3 uid="uid://rto7dm3ocdqg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_spfsu"]
+
+[resource]
+texture = SubResource("AtlasTexture_spfsu")

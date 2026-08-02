@@ -1,5 +1,15 @@
 [gd_scene format=3 uid="uid://dg5o6qxpjrapa"]
 
+[ext_resource type="Texture2D" uid="uid://chye20pyec2wn" path="res://button.png" id="1_a202f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d335l"]
+atlas = ExtResource("1_a202f")
+region = Rect2(225, 275, 1080, 420)
+
+[sub_resource type="LabelSettings" id="LabelSettings_olbh6"]
+font_size = 120
+font_color = Color(0.9663177, 0.66441613, 0.43538323, 1)
+
 [node name="Node3D" type="Node3D" unique_id=303995278]
 
 [node name="Cube_Generatable" type="Cube_Generatable" parent="." unique_id=2101259290]
@@ -10,3 +20,39 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.872934)
 
 [node name="Camera3D" type="Camera3D" parent="Voxel_Interactor" unique_id=469799563]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5740657)
+current = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Voxel_Interactor" unique_id=664711504]
+
+[node name="Control" type="Control" parent="Voxel_Interactor/CanvasLayer" unique_id=815976325]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button_Call_Function" type="Button_Call_Function" parent="Voxel_Interactor/CanvasLayer/Control" unique_id=357730037]
+m_target_path = NodePath("../../../../Voxel_Generator")
+m_function_name = &"print_hello"
+layout_mode = 0
+offset_left = 33.0
+offset_top = 267.0
+offset_right = 1113.0
+offset_bottom = 687.0
+scale = Vector2(0.15, 0.15)
+texture_normal = SubResource("AtlasTexture_d335l")
+
+[node name="Label" type="Label" parent="Voxel_Interactor/CanvasLayer/Control/Button_Call_Function" unique_id=1805059451]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.10700001
+anchor_bottom = 0.027
+offset_left = 273.33334
+offset_top = 119.99999
+offset_right = 731.1066
+offset_bottom = 315.3266
+text = "Generate"
+label_settings = SubResource("LabelSettings_olbh6")
+
+[node name="Voxel_Generator" type="Voxel_Generator" parent="." unique_id=1990605316]
