@@ -2,6 +2,7 @@
 
 #include "cube_generatable.h"
 #include "gdexample.h"
+#include "ui/button_call_function.h"
 #include "voxel/voxel_generator.h"
 #include "voxel/voxel_interactor.h"
 #include "voxel/voxel_object.h"
@@ -19,6 +20,7 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
 
   GDREGISTER_CLASS(GDExample);
   GDREGISTER_CLASS(Cube_Generatable);
+  GDREGISTER_CLASS(Button_Call_Function);
   GDREGISTER_CLASS(Voxel_Interactor);
   GDREGISTER_CLASS(Voxel_Generator);
 
