@@ -9,12 +9,16 @@ class Voxel_Generator : public Node {
   GDCLASS(Voxel_Generator, Node)
 
 private:
+  void spawn_voxel_object();
+
 protected:
   static void _bind_methods();
 
 public:
   Voxel_Generator();
   ~Voxel_Generator();
+
+  void print_hello() { UtilityFunctions::print("Hello World"); };
 };
 
 } // namespace godot

@@ -33,7 +33,7 @@ void Voxel_Interactor::_ready() {
 
 void Voxel_Interactor::_process() {
   // UtilityFunctions::print(m_mouse_motion.x, m_mouse_motion.y);
-  UtilityFunctions::print((float)m_target->get_global_rotation_degrees().y);
+  // UtilityFunctions::print((float)m_target->get_global_rotation_degrees().y);
 
   if (m_interact) {
     Vector3 rotation = m_target->get_rotation();
