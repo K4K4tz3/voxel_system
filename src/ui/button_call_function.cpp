@@ -41,6 +41,7 @@ void Button_Call_Function::on_pressed() {
   if (target == nullptr) {
     UtilityFunctions::push_error(
         "Button_Call_Function: m_call_path does not point to a valid node.");
+    UtilityFunctions::push_warning("Button_Call_Function: check ", m_call_path);
     return;
   }
 

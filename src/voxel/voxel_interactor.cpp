@@ -15,6 +15,9 @@ void Voxel_Interactor::_bind_methods() {
   ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "target_path",
                             PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Node3D"),
                "set_target_path", "get_target_path");
+
+  ClassDB::bind_method(D_METHOD("set_target_from_path"),
+                       &Voxel_Interactor::set_target_from_path);
 }
 
 Voxel_Interactor::Voxel_Interactor() {}
@@ -22,13 +25,6 @@ Voxel_Interactor::~Voxel_Interactor() {}
 
 void Voxel_Interactor::_ready() {
   Input::get_singleton()->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
-
-  m_target = Object::cast_to<Node3D>(get_node_or_null(m_target_path));
-
-  if (m_target == nullptr) {
-    UtilityFunctions::printerr("Could not find target Node3D at path: ",
-                               m_target_path);
-  }
 }
 
 void Voxel_Interactor::_process() {
@@ -53,6 +49,7 @@ void Voxel_Interactor::_process() {
     m_mouse_motion = Vector2{0, 0};
 }
 
+void Voxel_Interactor::_input(const Ref<InputEvent> &event) {}
 void Voxel_Interactor::_unhandled_input(const Ref<InputEvent> &event) {
   Ref<InputEventMouseMotion> mouse_motion = event;
   Ref<InputEventMouseButton> mouse_button = event;
@@ -75,3 +72,14 @@ void Voxel_Interactor::set_target_path(const NodePath &a_path) {
 }
 
 NodePath Voxel_Interactor::get_target_path() const { return m_target_path; }
+
+void Voxel_Interactor::set_target_from_path(const NodePath &a_path) {
+  m_target_path = a_path;
+  m_target = Object::cast_to<Node3D>(get_node_or_null(m_target_path));
+
+  if (m_target == nullptr) {
+    UtilityFunctions::printerr("Could not find target Node3D at path: ",
+                               m_target_path);
+  }
+  UtilityFunctions::print("Recieved voxel_object as target");
+}

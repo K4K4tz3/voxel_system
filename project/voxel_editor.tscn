@@ -1,9 +1,9 @@
-[gd_scene format=3 uid="uid://dg5o6qxpjrapa"]
+[gd_scene format=3 uid="uid://dqypq56eqibbi"]
 
-[ext_resource type="Texture2D" uid="uid://chye20pyec2wn" path="res://button.png" id="1_a202f"]
+[ext_resource type="Texture2D" uid="uid://chye20pyec2wn" path="res://button.png" id="1_2vwom"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d335l"]
-atlas = ExtResource("1_a202f")
+atlas = ExtResource("1_2vwom")
 region = Rect2(225, 275, 1080, 420)
 
 [sub_resource type="LabelSettings" id="LabelSettings_olbh6"]
@@ -23,20 +23,18 @@ current = true
 
 [node name="Control" type="Control" parent="Voxel_Interactor/CanvasLayer" unique_id=815976325]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
 grow_vertical = 2
 
 [node name="Button_Call_Function" type="Button_Call_Function" parent="Voxel_Interactor/CanvasLayer/Control" unique_id=357730037]
 m_target_path = NodePath("../../../../Voxel_Generator")
 m_function_name = &"spawn_voxel_object"
 layout_mode = 0
-offset_left = 33.0
-offset_top = 267.0
-offset_right = 1113.0
-offset_bottom = 687.0
+offset_top = -20.0
+offset_right = 1080.0
+offset_bottom = 400.0
 scale = Vector2(0.15, 0.15)
 texture_normal = SubResource("AtlasTexture_d335l")
 
@@ -53,3 +51,4 @@ text = "Generate"
 label_settings = SubResource("LabelSettings_olbh6")
 
 [node name="Voxel_Generator" type="Voxel_Generator" parent="." unique_id=1990605316]
+m_interactor_path = NodePath("../Voxel_Interactor")

@@ -30,10 +30,13 @@ public:
 
   void _ready() override;
   void _process();
+  void _input(const Ref<InputEvent> &event) override;
   void _unhandled_input(const Ref<InputEvent> &event) override;
 
   void set_target_path(const NodePath &a_path);
   NodePath get_target_path() const;
+
+  void set_target_from_path(const NodePath &a_path);
 };
 
 } // namespace godot
