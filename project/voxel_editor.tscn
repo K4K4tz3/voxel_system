@@ -51,4 +51,5 @@ text = "Generate"
 label_settings = SubResource("LabelSettings_olbh6")
 
 [node name="Voxel_Generator" type="Voxel_Generator" parent="." unique_id=1990605316]
-m_interactor_path = NodePath("../Voxel_Interactor")
+interactor_path = NodePath("../Voxel_Interactor")
+m_object_width = 3
