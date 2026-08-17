@@ -1,6 +1,10 @@
 #ifndef VOXEL_OBJECT_H
 #define VOXEL_OBJECT_H
 
+#include "voxel_data.h"
+#include "voxel_generator.h"
+
+#include <memory>
 #include <vector>
 
 #include <godot_cpp/classes/array_mesh.hpp>
@@ -14,7 +18,10 @@ class Voxel_Object : public Node3D {
   GDCLASS(Voxel_Object, Node3D)
 
 private:
+  Voxel_Generator *m_generator = nullptr;
   MeshInstance3D *m_mesh_instance = nullptr;
+
+  std::unique_ptr<Voxel_Data> m_voxel_data = nullptr;
 
   const PackedVector3Array M_VERTICES = {
       // front
@@ -47,11 +54,16 @@ protected:
   static void _bind_methods();
 
 public:
-  Voxel_Object();
-  ~Voxel_Object();
-
   void _ready() override;
   void build_cube();
+
+  void set_generator(Voxel_Generator *a_generator) {
+    m_generator = a_generator;
+  };
+
+  void set_data(std::unique_ptr<Voxel_Data> a_data) {
+    m_voxel_data = std::move(a_data);
+  }
 };
 } // namespace godot
 

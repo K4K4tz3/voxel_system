@@ -9,14 +9,7 @@ void Voxel_Object::_bind_methods() {
   ClassDB::bind_method(D_METHOD("build_cube"), &Voxel_Object::build_cube);
 }
 
-Voxel_Object::Voxel_Object() {
-  m_mesh_instance = memnew(MeshInstance3D);
-  add_child(m_mesh_instance);
-}
-
-Voxel_Object::~Voxel_Object() {}
-
-void Voxel_Object::_ready() { build_cube(); }
+void Voxel_Object::_ready() {}
 
 void Voxel_Object::build_cube() {
   // 1. Vertex positions (counter-clockwise winding = front-facing)

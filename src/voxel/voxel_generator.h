@@ -3,6 +3,7 @@
 
 #include <godot_cpp/classes/node.hpp>
 
+#include "voxel_data.h"
 #include "voxel_interactor.h"
 
 #include <godot_cpp/classes/node3d.hpp>
@@ -16,7 +17,10 @@ private:
   NodePath m_interactor_path;
   Voxel_Interactor *m_interactor = nullptr;
 
-  void spawn_voxel_object();
+  // void spawn_voxel_object();
+
+  int m_voxel_size;
+  int m_object_width, m_object_height, m_object_depth;
 
 protected:
   static void _bind_methods();
@@ -27,12 +31,33 @@ public:
 
   void _ready() override;
 
+  bool create_voxel_object();
+  bool generate_grid(Voxel_Data &a_data);
+
+  //
+  // Property Set/Get
+  //
   void set_interactor_path(const NodePath &a_path) {
     m_interactor_path = a_path;
   };
   NodePath get_interactor_path() const { return m_interactor_path; };
-};
 
+  void set_voxel_size(const int &a_voxel_size) { m_voxel_size = a_voxel_size; };
+  int get_voxel_size() const { return m_voxel_size; };
+
+  void set_object_width(const int &a_object_width) {
+    m_object_width = a_object_width;
+  };
+  int get_object_width() const { return m_object_width; };
+  void set_object_height(const int &a_object_height) {
+    m_object_height = a_object_height;
+  };
+  int get_object_height() const { return m_object_height; };
+  void set_object_depth(const int &a_object_depth) {
+    m_object_depth = a_object_depth;
+  };
+  int get_object_depth() const { return m_object_depth; };
+};
 } // namespace godot
 
 #endif
