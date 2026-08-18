@@ -29,29 +29,41 @@ void Voxel_Generator::_bind_methods() {
   ADD_PROPERTY(PropertyInfo(Variant::INT, "m_voxel_size"), "set_voxel_size",
                "get_voxel_size");
 
-  ClassDB::bind_method(D_METHOD("set_object_width", "width"),
+  ClassDB::bind_method(D_METHOD("set_object_width", "m_object_width"),
                        &Voxel_Generator::set_object_width);
   ClassDB::bind_method(D_METHOD("get_object_width"),
                        &Voxel_Generator::get_object_width);
 
-  ClassDB::bind_method(D_METHOD("set_object_height", "height"),
+  ClassDB::bind_method(D_METHOD("set_object_height", "m_object_height"),
                        &Voxel_Generator::set_object_height);
   ClassDB::bind_method(D_METHOD("get_object_height"),
                        &Voxel_Generator::get_object_height);
 
-  ClassDB::bind_method(D_METHOD("set_object_depth", "depth"),
+  ClassDB::bind_method(D_METHOD("set_object_depth", "m_object_depth"),
                        &Voxel_Generator::set_object_depth);
   ClassDB::bind_method(D_METHOD("get_object_depth"),
                        &Voxel_Generator::get_object_depth);
 
-  ADD_GROUP("Object", "");
+  ADD_GROUP("Object", "object_");
 
-  ADD_PROPERTY(PropertyInfo(Variant::INT, "width"), "set_object_width",
+  ADD_PROPERTY(PropertyInfo(Variant::INT, "object_width"), "set_object_width",
                "get_object_width");
-  ADD_PROPERTY(PropertyInfo(Variant::INT, "height"), "set_object_height",
+  ADD_PROPERTY(PropertyInfo(Variant::INT, "object_height"), "set_object_height",
                "get_object_height");
-  ADD_PROPERTY(PropertyInfo(Variant::INT, "depth"), "set_object_depth",
+  ADD_PROPERTY(PropertyInfo(Variant::INT, "object_depth"), "set_object_depth",
                "get_object_depth");
+
+  //
+  // Debug
+  //
+  ClassDB::bind_method(D_METHOD("set_debug_scale", "debug_voxel_center_scale"),
+                       &Voxel_Generator::set_debug_scale);
+  ClassDB::bind_method(D_METHOD("get_debug_scale"),
+                       &Voxel_Generator::get_debug_scale);
+
+  ADD_GROUP("Debug", "debug");
+  ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "debug_voxel_center_scale"),
+               "set_debug_scale", "get_debug_scale");
 }
 
 Voxel_Generator::Voxel_Generator() {}
@@ -111,6 +123,7 @@ bool Voxel_Generator::generate_grid(Voxel_Data &a_data) {
         voxels.push_back(Object::cast_to<Node3D>(model->instantiate()));
 
         voxels[index]->set_position(Vector3(x, y, z));
+        voxels[index]->set_scale(m_debug_voxel_center_scale);
         add_child(voxels[index++]);
       }
     }

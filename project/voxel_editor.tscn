@@ -1,14 +1,20 @@
 [gd_scene format=3 uid="uid://dqypq56eqibbi"]
 
 [ext_resource type="Texture2D" uid="uid://chye20pyec2wn" path="res://button.png" id="1_2vwom"]
+[ext_resource type="FontFile" uid="uid://dqthb4qe1yhew" path="res://PhantomRunes.otf" id="2_ny6mh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d335l"]
 atlas = ExtResource("1_2vwom")
 region = Rect2(225, 275, 1080, 420)
 
 [sub_resource type="LabelSettings" id="LabelSettings_olbh6"]
-font_size = 120
-font_color = Color(0.9663177, 0.66441613, 0.43538323, 1)
+font = ExtResource("2_ny6mh")
+font_size = 280
+font_color = Color(0.8193552, 0.47468746, 0.1774897, 1)
+outline_size = 10
+outline_color = Color(0.6626032, 0.36945403, 0.108748846, 1)
+shadow_size = 15
+shadow_color = Color(0.620888, 0.34959108, 0.10504029, 1)
 
 [node name="Node3D" type="Node3D" unique_id=303995278]
 
@@ -43,15 +49,15 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.10700001
 anchor_bottom = 0.027
-offset_left = 273.33334
-offset_top = 119.99999
-offset_right = 731.1066
-offset_bottom = 315.3266
+offset_left = 226.66667
+offset_top = 66.666664
+offset_right = 684.43994
+offset_bottom = 335.32666
 text = "Generate"
 label_settings = SubResource("LabelSettings_olbh6")
 
 [node name="Voxel_Generator" type="Voxel_Generator" parent="." unique_id=1990605316]
 interactor_path = NodePath("../Voxel_Interactor")
-width = 3
-height = 3
-depth = 3
+m_voxel_size = 1783327264
+object_height = -33498662
+object_depth = 226
