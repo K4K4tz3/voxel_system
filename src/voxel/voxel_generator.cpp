@@ -97,17 +97,29 @@ bool Voxel_Generator::create_voxel_object() {
 
 bool Voxel_Generator::generate_grid(Voxel_Data &a_data) {
   // const int size = m_object_width * m_object_height * m_object_depth;
-
-  // for (int i = 0; i < size; i++)
-  //   a_data.densities.push_back(0);
-
   Ref<PackedScene> model =
       ResourceLoader::get_singleton()->load("res://ball.glb");
 
-  Node3D *instance = Object::cast_to<Node3D>(model->instantiate());
-  UtilityFunctions::print("generated grid");
-  instance->set_position(Vector3(0, 0, 0));
-  add_child(instance);
+  std::vector<Node3D *> voxels;
+  voxels.reserve(m_object_width * m_object_height * m_object_depth);
+
+  int index = 0;
+  for (int x = 0; x < m_object_width; x++) {
+    for (int y = 0; y < m_object_height; y++) {
+      for (int z = 0; z < m_object_depth; z++) {
+        // fill voxel with debug ball
+        voxels.push_back(Object::cast_to<Node3D>(model->instantiate()));
+
+        voxels[index]->set_position(Vector3(x, y, z));
+        add_child(voxels[index++]);
+      }
+    }
+  }
+
+  // Node3D *instance = Object::cast_to<Node3D>(model->instantiate());
+  // UtilityFunctions::print("generated grid");
+  // instance->set_position(Vector3(0, 0, 0));
+  // add_child(instance);
 
   return true;
 }
