@@ -6,6 +6,7 @@
 #include "voxel_data.h"
 #include "voxel_interactor.h"
 
+#include <godot_cpp/classes/material.hpp>
 #include <godot_cpp/classes/node3d.hpp>
 #include <godot_cpp/classes/packed_scene.hpp>
 
@@ -25,6 +26,15 @@ private:
   Vector3 m_debug_voxel_center_scale = Vector3(1, 1, 1);
 
   Ref<PackedScene> m_debug_model;
+  Ref<Material> m_material_default;
+  Ref<Material> m_material_filled_voxel;
+
+  const std::vector<int> m_test_voxel_structure{0, 1, 0, 1, 1, 1, 0, 1, 0,
+                                                1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                                0, 1, 0, 1, 1, 1, 0, 1, 0};
+
+  Node3D *_create_debug_ball(const int a_index);
+  void _set_debug_ball_material(Node3D *&a_node, const int a_value);
 
 protected:
   static void _bind_methods();
@@ -37,8 +47,6 @@ public:
 
   bool create_voxel_object();
   bool generate_grid(Voxel_Data &a_data);
-
-  Node3D *create_debug_ball(const int a_index);
 
   //
   // Property Set/Get

@@ -3,10 +3,13 @@
 #include "voxel.h"
 #include "voxel_object.h"
 
+#include <godot_cpp/classes/mesh_instance3d.hpp>
+#include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/node3d.hpp>
 #include <godot_cpp/classes/packed_scene.hpp>
 #include <godot_cpp/classes/resource_loader.hpp>
 #include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/variant/node_path.hpp>
 
 using namespace godot;
 
@@ -86,6 +89,19 @@ void Voxel_Generator::_ready() {
   if (m_debug_model.is_null()) {
     UtilityFunctions::push_error("Voxel_Generator: Debug Model cant be loaded");
   }
+
+  m_material_default = ResourceLoader::get_singleton()->load("res://blue.tres");
+  if (m_material_default.is_null()) {
+    UtilityFunctions::push_error(
+        "Voxel_Generator: Default Debug Material cant be loaded");
+  }
+
+  m_material_filled_voxel =
+      ResourceLoader::get_singleton()->load("res://filled_voxel.tres");
+  if (m_material_filled_voxel.is_null()) {
+    UtilityFunctions::push_error(
+        "Voxel_Generator: Filled Voxel Debug Material cant be loaded");
+  }
 }
 
 bool Voxel_Generator::create_voxel_object() {
@@ -123,9 +139,9 @@ bool Voxel_Generator::generate_grid(Voxel_Data &a_data) {
   for (int index = 0; index < grid_size; index++) {
     Voxel *current = new Voxel();
     // instantiate debug ball at index
-    current->center = create_debug_ball(index);
-
+    current->center = _create_debug_ball(index);
     add_child(current->center);
+    _set_debug_ball_material(current->center, m_test_voxel_structure[index]);
 
     // top
     // left -> neg x
@@ -144,7 +160,7 @@ bool Voxel_Generator::generate_grid(Voxel_Data &a_data) {
   return true;
 }
 
-Node3D *Voxel_Generator::create_debug_ball(int a_index) {
+Node3D *Voxel_Generator::_create_debug_ball(int a_index) {
   Node3D *node = Object::cast_to<Node3D>(m_debug_model->instantiate());
 
   int x = a_index % m_object_width;
@@ -155,4 +171,17 @@ Node3D *Voxel_Generator::create_debug_ball(int a_index) {
   node->set_scale(m_debug_voxel_center_scale);
 
   return node;
+}
+
+void Voxel_Generator::_set_debug_ball_material(Node3D *&a_node,
+                                               const int a_value) {
+  MeshInstance3D *mesh = a_node->get_node<MeshInstance3D>(NodePath("Sphere"));
+
+  switch (a_value) {
+  case 1:
+    mesh->set_material_override(m_material_filled_voxel);
+    break;
+  default:
+    mesh->set_material_override(m_material_default);
+  }
 }
