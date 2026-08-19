@@ -7,6 +7,7 @@
 #include "voxel_interactor.h"
 
 #include <godot_cpp/classes/node3d.hpp>
+#include <godot_cpp/classes/packed_scene.hpp>
 
 namespace godot {
 
@@ -23,6 +24,8 @@ private:
   int m_object_width, m_object_height, m_object_depth;
   Vector3 m_debug_voxel_center_scale = Vector3(1, 1, 1);
 
+  Ref<PackedScene> m_debug_model;
+
 protected:
   static void _bind_methods();
 
@@ -34,6 +37,8 @@ public:
 
   bool create_voxel_object();
   bool generate_grid(Voxel_Data &a_data);
+
+  Node3D *create_debug_ball(const int a_index);
 
   //
   // Property Set/Get

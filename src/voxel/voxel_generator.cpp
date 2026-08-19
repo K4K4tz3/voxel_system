@@ -1,5 +1,6 @@
 #include "voxel_generator.h"
 
+#include "voxel.h"
 #include "voxel_object.h"
 
 #include <godot_cpp/classes/node3d.hpp>
@@ -79,6 +80,12 @@ void Voxel_Generator::_ready() {
     m_interactor =
         Object::cast_to<Voxel_Interactor>(get_node_or_null(m_interactor_path));
   }
+
+  // const int size = m_object_width * m_object_height * m_object_depth;
+  m_debug_model = ResourceLoader::get_singleton()->load("res://ball.glb");
+  if (m_debug_model.is_null()) {
+    UtilityFunctions::push_error("Voxel_Generator: Debug Model cant be loaded");
+  }
 }
 
 bool Voxel_Generator::create_voxel_object() {
@@ -108,25 +115,25 @@ bool Voxel_Generator::create_voxel_object() {
 }
 
 bool Voxel_Generator::generate_grid(Voxel_Data &a_data) {
-  // const int size = m_object_width * m_object_height * m_object_depth;
-  Ref<PackedScene> model =
-      ResourceLoader::get_singleton()->load("res://ball.glb");
+  const size_t grid_size = m_object_width * m_object_height * m_object_depth;
 
-  std::vector<Node3D *> voxels;
-  voxels.reserve(m_object_width * m_object_height * m_object_depth);
+  std::vector<Voxel *> voxels;
+  voxels.reserve(grid_size);
 
-  int index = 0;
-  for (int x = 0; x < m_object_width; x++) {
-    for (int y = 0; y < m_object_height; y++) {
-      for (int z = 0; z < m_object_depth; z++) {
-        // fill voxel with debug ball
-        voxels.push_back(Object::cast_to<Node3D>(model->instantiate()));
+  for (int index = 0; index < grid_size; index++) {
+    Voxel *current = new Voxel();
+    // instantiate debug ball at index
+    current->center = create_debug_ball(index);
 
-        voxels[index]->set_position(Vector3(x, y, z));
-        voxels[index]->set_scale(m_debug_voxel_center_scale);
-        add_child(voxels[index++]);
-      }
-    }
+    add_child(current->center);
+
+    // top
+    // left -> neg x
+    // back -> neg z
+    // right -> x
+    // front -> z
+    // bot
+    UtilityFunctions::print("Generated ", index, " voxel");
   }
 
   // Node3D *instance = Object::cast_to<Node3D>(model->instantiate());
@@ -135,4 +142,17 @@ bool Voxel_Generator::generate_grid(Voxel_Data &a_data) {
   // add_child(instance);
 
   return true;
+}
+
+Node3D *Voxel_Generator::create_debug_ball(int a_index) {
+  Node3D *node = Object::cast_to<Node3D>(m_debug_model->instantiate());
+
+  int x = a_index % m_object_width;
+  int y = (a_index / m_object_width) % m_object_height;
+  int z = a_index / (m_object_width * m_object_height);
+
+  node->set_position(Vector3(x, y, z));
+  node->set_scale(m_debug_voxel_center_scale);
+
+  return node;
 }
