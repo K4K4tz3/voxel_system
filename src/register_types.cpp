@@ -1,9 +1,10 @@
 #include "register_types.h"
 
-#include "gdexample.h"
 #include "ui/button_call_function.h"
+
 #include "voxel/voxel_generator.h"
 #include "voxel/voxel_interactor.h"
+#include "voxel/voxel_manager.h"
 #include "voxel/voxel_object.h"
 
 #include <gdextension_interface.h>
@@ -17,11 +18,11 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
     return;
   }
 
-  GDREGISTER_CLASS(GDExample);
   GDREGISTER_CLASS(Button_Call_Function);
+
+  GDREGISTER_CLASS(Voxel_Manager);
   GDREGISTER_CLASS(Voxel_Interactor);
   GDREGISTER_CLASS(Voxel_Generator);
-
   GDREGISTER_CLASS(Voxel_Object);
 }
 

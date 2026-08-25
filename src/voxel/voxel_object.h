@@ -1,6 +1,7 @@
 #ifndef VOXEL_OBJECT_H
 #define VOXEL_OBJECT_H
 
+#include "voxel.h"
 #include "voxel_data.h"
 #include "voxel_generator.h"
 
@@ -20,6 +21,7 @@ class Voxel_Object : public Node3D {
 private:
   Voxel_Generator *m_generator = nullptr;
   MeshInstance3D *m_mesh_instance = nullptr;
+  std::vector<Voxel *> m_voxels;
 
   std::unique_ptr<Voxel_Data> m_voxel_data = nullptr;
 
@@ -64,6 +66,9 @@ public:
   void set_data(std::unique_ptr<Voxel_Data> a_data) {
     m_voxel_data = std::move(a_data);
   }
+
+  // void set_voxels(std::vector<Voxel *> *&a_voxels) { m_voxels = a_voxels; };
+  // std::vector<Voxel *> &get_voxels() { return m_voxels; };
 };
 } // namespace godot
 
