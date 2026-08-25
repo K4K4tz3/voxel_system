@@ -36,7 +36,7 @@ grow_vertical = 2
 
 [node name="Button_Call_Function" type="Button_Call_Function" parent="Voxel_Interactor/CanvasLayer/Control" unique_id=357730037]
 m_target_path = NodePath("../../../../Voxel_Manager")
-m_function_name = &"create_object"
+m_function_name = &"create_object_and_generate_default"
 layout_mode = 0
 offset_top = -20.0
 offset_right = 1080.0
@@ -57,6 +57,7 @@ text = "Generate"
 label_settings = SubResource("LabelSettings_olbh6")
 
 [node name="Voxel_Manager" type="Voxel_Manager" parent="." unique_id=893476236]
+m_generator_path = NodePath("Voxel_Generator")
 
 [node name="Voxel_Generator" type="Voxel_Generator" parent="Voxel_Manager" unique_id=1990605316]
 interactor_path = NodePath("../../Voxel_Interactor")

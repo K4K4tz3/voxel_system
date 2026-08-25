@@ -3,7 +3,6 @@
 
 #include "voxel.h"
 #include "voxel_data.h"
-#include "voxel_generator.h"
 
 #include <memory>
 #include <vector>
@@ -19,7 +18,6 @@ class Voxel_Object : public Node3D {
   GDCLASS(Voxel_Object, Node3D)
 
 private:
-  Voxel_Generator *m_generator = nullptr;
   MeshInstance3D *m_mesh_instance = nullptr;
   std::vector<Voxel *> m_voxels;
 
@@ -58,14 +56,6 @@ protected:
 public:
   void _ready() override;
   void build_cube();
-
-  void set_generator(Voxel_Generator *a_generator) {
-    m_generator = a_generator;
-  };
-
-  void set_data(std::unique_ptr<Voxel_Data> a_data) {
-    m_voxel_data = std::move(a_data);
-  }
 
   // void set_voxels(std::vector<Voxel *> *&a_voxels) { m_voxels = a_voxels; };
   // std::vector<Voxel *> &get_voxels() { return m_voxels; };

@@ -5,6 +5,7 @@
 
 #include "voxel_data.h"
 #include "voxel_interactor.h"
+#include "voxel_object.h"
 
 #include <godot_cpp/classes/material.hpp>
 #include <godot_cpp/classes/node3d.hpp>
@@ -45,8 +46,7 @@ public:
 
   void _ready() override;
 
-  bool create_voxel_object();
-  bool generate_grid(Voxel_Data &a_data);
+  bool generate_grid(Voxel_Object &a_object);
 
   //
   // Property Set/Get

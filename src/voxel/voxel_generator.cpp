@@ -23,9 +23,6 @@ void Voxel_Generator::_bind_methods() {
   ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "interactor_path"),
                "set_interactor_path", "get_interactor_path");
 
-  ClassDB::bind_method(D_METHOD("create_voxel_object"),
-                       &Voxel_Generator::create_voxel_object);
-
   ClassDB::bind_method(D_METHOD("set_voxel_size", "voxel size"),
                        &Voxel_Generator::set_voxel_size);
   ClassDB::bind_method(D_METHOD("get_voxel_size"),
@@ -104,33 +101,17 @@ void Voxel_Generator::_ready() {
   }
 }
 
-bool Voxel_Generator::create_voxel_object() {
-  UtilityFunctions::print("test");
-  Voxel_Object *voxel_object = memnew(Voxel_Object);
-
-  voxel_object->set_generator(this);
-
-  auto data = std::make_unique<Voxel_Data>();
-  data->width = m_object_width;
-  data->height = m_object_height;
-  data->depth = m_object_depth;
-
-  if (!generate_grid(*data)) {
-    UtilityFunctions::push_warning("Voxel_Generator: Failed to generate_grid");
-    return false;
-  }
-
-  add_child(voxel_object);
-  UtilityFunctions::print("Created voxel object");
-
-  // sent created object to interactor
-  NodePath object_path = voxel_object->get_path();
-  m_interactor->set_target_from_path(object_path);
-
-  return true;
-}
-
-bool Voxel_Generator::generate_grid(Voxel_Data &a_data) {
+/**
+ * @brief Generates the individual voxels of a object.
+ *
+ * Creates a array full of voxels, each generated with a debug ball and their
+ * own location.
+ *
+ * @param a_data Voxel_Data that acts as foundation for a Voxel_Object. When
+ * left empty, an empty grid gets generated.
+ * @return State of success
+ */
+bool Voxel_Generator::generate_grid(Voxel_Object &a_object) {
   const size_t grid_size = m_object_width * m_object_height * m_object_depth;
 
   std::vector<Voxel *> voxels;
