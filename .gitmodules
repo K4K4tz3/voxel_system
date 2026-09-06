@@ -2,3 +2,6 @@
 	path = godot-cpp
 	url = https://github.com/godotengine/godot-cpp
 	branch = 4.4
+[submodule "external/json"]
+	path = external/json
+	url = https://www.github.com/nlohmann/json
