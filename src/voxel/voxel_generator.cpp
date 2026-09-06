@@ -121,7 +121,7 @@ bool Voxel_Generator::generate_grid(Voxel_Object &a_object) {
     Voxel *current = new Voxel();
     // instantiate debug ball at index
     current->center = _create_debug_ball(index);
-    add_child(current->center);
+    a_object.add_child(current->center);
     _set_debug_ball_material(current->center, m_test_voxel_structure[index]);
 
     // top
