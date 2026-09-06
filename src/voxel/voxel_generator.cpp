@@ -144,10 +144,13 @@ bool Voxel_Generator::generate_grid(Voxel_Object &a_object) {
 Node3D *Voxel_Generator::_create_debug_ball(int a_index) {
   Node3D *node = Object::cast_to<Node3D>(m_debug_model->instantiate());
 
-  int x = a_index % m_object_width;
-  int y = (a_index / m_object_width) % m_object_height;
-  int z = a_index / (m_object_width * m_object_height);
+  float x = (a_index % m_object_width) - ((float)(m_object_width - 1) / 2);
+  float y = ((a_index / m_object_width) % m_object_height) -
+            ((float)(m_object_height - 1) / 2);
+  float z = (a_index / (m_object_width * m_object_height)) -
+            ((float)(m_object_depth - 1) / 2);
 
+  UtilityFunctions::print("X: ", x, " Y: ", y, " Z: ", z);
   node->set_position(Vector3(x, y, z));
   node->set_scale(m_debug_voxel_center_scale);
 
