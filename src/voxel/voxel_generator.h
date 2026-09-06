@@ -47,6 +47,7 @@ public:
   void _ready() override;
 
   bool generate_grid(Voxel_Object &a_object);
+  bool generate_mesh_instance(Voxel_Object &a_object);
 
   //
   // Property Set/Get

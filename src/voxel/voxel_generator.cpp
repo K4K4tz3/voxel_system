@@ -1,5 +1,6 @@
 #include "voxel_generator.h"
 
+#include "mesh_data.h"
 #include "voxel.h"
 #include "voxel_object.h"
 
@@ -114,8 +115,7 @@ void Voxel_Generator::_ready() {
 bool Voxel_Generator::generate_grid(Voxel_Object &a_object) {
   const size_t grid_size = m_object_width * m_object_height * m_object_depth;
 
-  std::vector<Voxel *> voxels;
-  voxels.reserve(grid_size);
+  a_object.reserve_voxels(grid_size);
 
   for (int index = 0; index < grid_size; index++) {
     Voxel *current = new Voxel();
@@ -130,6 +130,7 @@ bool Voxel_Generator::generate_grid(Voxel_Object &a_object) {
     // right -> x
     // front -> z
     // bot
+    a_object.push_back_voxel(current);
     UtilityFunctions::print("Generated ", index, " voxel");
   }
 
@@ -138,6 +139,68 @@ bool Voxel_Generator::generate_grid(Voxel_Object &a_object) {
   // instance->set_position(Vector3(0, 0, 0));
   // add_child(instance);
 
+  return true;
+}
+
+bool Voxel_Generator::generate_mesh_instance(Voxel_Object &a_object) {
+  UtilityFunctions::print("Generating mesh");
+  Mesh_Data mesh_data;
+
+  Voxel *temp_voxel = a_object.get_voxel_ref(0);
+  if (temp_voxel == nullptr) {
+    UtilityFunctions::push_error("Temp_Voxel is empty");
+    return false;
+  }
+  // create vertices
+  mesh_data.vertices.push_back(temp_voxel->top());
+  mesh_data.vertices.push_back(temp_voxel->front());
+  mesh_data.vertices.push_back(temp_voxel->left());
+
+  // 2. Normals - all face +Z so the flat triangle is lit from the front-facing
+  for (int i = 0; i < 3; i++) {
+    mesh_data.normals.push_back(Vector3(0.0, 0.0, 1.0));
+  }
+
+  // 3. UVs (optional, for texturing)
+  for (int i = 0; i < 3; i += 3) {
+    mesh_data.uvs.push_back(Vector2(0.5, 0.0));
+    mesh_data.uvs.push_back(Vector2(0.0, 1.0));
+    mesh_data.uvs.push_back(Vector2(1.0, 1.0));
+  }
+
+  // 4. Vertex Colors (optional)
+  for (int i = 0; i < 3; i += 3) {
+    mesh_data.colors.push_back(Color(1, 0, 0));
+    mesh_data.colors.push_back(Color(0, 1, 0));
+    mesh_data.colors.push_back(Color(0, 0, 1));
+  }
+
+  UtilityFunctions::print("Pack Mesh Data into Collection");
+  // 5. Pack into ARRAY_MAX-sized ARRAY_MAX-sized
+  mesh_data.collection.resize(Mesh::ARRAY_MAX);
+  mesh_data.collection[Mesh::ARRAY_VERTEX] = mesh_data.vertices;
+  mesh_data.collection[Mesh::ARRAY_NORMAL] = mesh_data.normals;
+  mesh_data.collection[Mesh::ARRAY_TEX_UV] = mesh_data.uvs;
+  mesh_data.collection[Mesh::ARRAY_COLOR] = mesh_data.colors;
+
+  UtilityFunctions::print("Build mesh surface");
+  // 6. Build the mesh surface
+  Ref<ArrayMesh> mesh;
+  mesh.instantiate();
+  mesh->add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES,
+                                mesh_data.collection);
+
+  UtilityFunctions::print("Instantiate mesh instance");
+  // 7. Material so vertex colors show and its visible from both sides
+  Ref<StandardMaterial3D> material;
+  material.instantiate();
+  material->set_flag(BaseMaterial3D::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
+  material->set_cull_mode(BaseMaterial3D::CULL_BACK); // draw both faces
+  mesh->surface_set_material(0, material);
+
+  a_object.set_mesh_instance(mesh);
+
+  UtilityFunctions::print("Finished generating mesh instance");
   return true;
 }
 

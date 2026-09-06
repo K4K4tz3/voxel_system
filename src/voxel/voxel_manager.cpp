@@ -9,6 +9,7 @@ void Voxel_Manager::_bind_methods() {
                        &Voxel_Manager::create_object);
   ClassDB::bind_method(D_METHOD("create_object_and_generate_default"),
                        &Voxel_Manager::create_object_and_generate_default);
+  ClassDB::bind_method(D_METHOD("create_mesh"), &Voxel_Manager::create_mesh);
 
   ClassDB::bind_method(D_METHOD("set_generator_path", "m_generator_path"),
                        &Voxel_Manager::set_generator_path);
@@ -77,4 +78,8 @@ bool Voxel_Manager::create_object_and_generate_default() {
   // Object got created successfully
   m_objects.push_back(object);
   return true;
+}
+
+void Voxel_Manager::create_mesh() {
+  m_generator->generate_mesh_instance(*m_objects[0]);
 }

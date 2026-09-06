@@ -8,12 +8,12 @@ namespace godot {
 struct Voxel {
 
   Node3D *center;
-  Node3D *top;
-  Node3D *left;
-  Node3D *back;
-  Node3D *right;
-  Node3D *front;
-  Node3D *bottom;
+  Vector3 top() const { return center->get_position() + Vector3(0, 1, 0); }
+  Vector3 bottom() const { return center->get_position() + Vector3(0, -1, 0); }
+  Vector3 front() const { return center->get_position() + Vector3(1, 0, 0); }
+  Vector3 back() const { return center->get_position() + Vector3(-1, 0, 0); }
+  Vector3 left() const { return center->get_position() + Vector3(0, 0, 1); }
+  Vector3 right() const { return center->get_position() + Vector3(0, 0, -1); }
 };
 
 }; // namespace godot

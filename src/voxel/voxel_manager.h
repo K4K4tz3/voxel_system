@@ -26,6 +26,7 @@ public:
 
   bool create_object();
   bool create_object_and_generate_default();
+  void create_mesh();
 
   void set_generator_path(const NodePath &a_generator_path) {
     m_generator_path = a_generator_path;

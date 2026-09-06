@@ -9,11 +9,11 @@ region = Rect2(225, 275, 1080, 420)
 
 [sub_resource type="LabelSettings" id="LabelSettings_olbh6"]
 font = ExtResource("2_ny6mh")
-font_size = 280
+font_size = 43
 font_color = Color(0.8193552, 0.47468746, 0.1774897, 1)
-outline_size = 10
+outline_size = 4
 outline_color = Color(0.6626032, 0.36945403, 0.108748846, 1)
-shadow_size = 15
+shadow_size = 3
 shadow_color = Color(0.620888, 0.34959108, 0.10504029, 1)
 
 [node name="Node3D" type="Node3D" unique_id=303995278]
@@ -34,26 +34,67 @@ anchor_top = 0.5
 anchor_bottom = 0.5
 grow_vertical = 2
 
-[node name="Button_Call_Function" type="Button_Call_Function" parent="Voxel_Interactor/CanvasLayer/Control" unique_id=357730037]
-m_target_path = NodePath("../../../../Voxel_Manager")
-m_function_name = &"create_object_and_generate_default"
-layout_mode = 0
-offset_top = -20.0
-offset_right = 1080.0
-offset_bottom = 400.0
-scale = Vector2(0.15, 0.15)
-texture_normal = SubResource("AtlasTexture_d335l")
-
-[node name="Label" type="Label" parent="Voxel_Interactor/CanvasLayer/Control/Button_Call_Function" unique_id=1805059451]
+[node name="VBoxContainer" type="VBoxContainer" parent="Voxel_Interactor/CanvasLayer/Control" unique_id=1765326553]
 layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.10700001
-anchor_bottom = 0.027
-offset_left = 226.66667
-offset_top = 66.666664
-offset_right = 684.43994
-offset_bottom = 335.32666
-text = "Generate"
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -109.0
+offset_right = 200.0
+offset_bottom = 109.0
+grow_vertical = 2
+alignment = 1
+
+[node name="Button_Call_Function" type="Button_Call_Function" parent="Voxel_Interactor/CanvasLayer/Control/VBoxContainer" unique_id=357730037]
+m_target_path = NodePath("../../../../../Voxel_Manager")
+m_function_name = &"create_object_and_generate_default"
+custom_minimum_size = Vector2(200, 70)
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_d335l")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Voxel_Interactor/CanvasLayer/Control/VBoxContainer/Button_Call_Function" unique_id=1805059451]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.5
+offset_top = -20.0
+offset_right = 40.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 11
+text = "Create Object"
+label_settings = SubResource("LabelSettings_olbh6")
+
+[node name="Button_Call_Function2" type="Button_Call_Function" parent="Voxel_Interactor/CanvasLayer/Control/VBoxContainer" unique_id=888000000]
+m_target_path = NodePath("../../../../../Voxel_Manager")
+m_function_name = &"create_mesh"
+custom_minimum_size = Vector2(200, 70)
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_d335l")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Voxel_Interactor/CanvasLayer/Control/VBoxContainer/Button_Call_Function2" unique_id=1566754156]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.5
+offset_top = -20.0
+offset_right = 40.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 11
+text = "Generate Mesh"
 label_settings = SubResource("LabelSettings_olbh6")
 
 [node name="Voxel_Manager" type="Voxel_Manager" parent="." unique_id=893476236]

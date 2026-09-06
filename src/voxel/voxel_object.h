@@ -26,42 +26,21 @@ private:
 
   Ref<PackedScene> m_center_model;
 
-  const PackedVector3Array M_VERTICES = {
-      // front
-      Vector3(-1.0, 1.0, 1.0),   // top left
-      Vector3(1.0, 1.0, 1.0),    // top right
-      Vector3(1.0, -1.0, 1.0),   // bot right
-      Vector3(-1.0, -1.0, 1.0),  // bot left
-                                 // back
-      Vector3(1.0, 1.0, -1.0),   // top right
-      Vector3(-1.0, 1.0, -1.0),  // top left
-      Vector3(-1.0, -1.0, -1.0), // bot left
-      Vector3(1.0, -1.0, -1.0),  // bot right
-  };
-
-  const std::vector<int> M_VERT_ORDER = {
-      0, 1, 3, 2, 3, 1, // front
-      1, 4, 2, 7, 2, 4, // right
-      4, 5, 7, 6, 7, 5, // back
-      5, 0, 6, 3, 6, 0, // left
-      5, 4, 0, 1, 0, 4, // top
-      3, 2, 6, 7, 6, 2, // bottom
-  };
-  const int M_VERT_COUNT = M_VERT_ORDER.size();
-
-  Vector3 get_vertice_coords(const int a_index) const {
-    return M_VERTICES[a_index];
-  };
-
 protected:
   static void _bind_methods();
 
 public:
-  void _ready() override;
-  void build_cube();
+  Voxel_Object();
+  ~Voxel_Object();
 
-  // void set_voxels(std::vector<Voxel *> *&a_voxels) { m_voxels = a_voxels; };
-  // std::vector<Voxel *> &get_voxels() { return m_voxels; };
+  void _ready() override;
+
+  void reserve_voxels(const size_t a_size);
+  void push_back_voxel(Voxel *a_voxel);
+  void set_voxel(const size_t a_index, Voxel *a_voxel);
+  Voxel *get_voxel_ref(const size_t a_index);
+  void set_mesh_instance(Ref<ArrayMesh> a_mesh);
+  int get_voxels_size() const;
 };
 } // namespace godot
 

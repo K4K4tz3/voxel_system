@@ -6,9 +6,13 @@
 
 using namespace godot;
 
-void Voxel_Object::_bind_methods() {
-  ClassDB::bind_method(D_METHOD("build_cube"), &Voxel_Object::build_cube);
+void Voxel_Object::_bind_methods() {}
+
+Voxel_Object::Voxel_Object() {
+  m_mesh_instance = memnew(MeshInstance3D);
+  add_child(m_mesh_instance);
 }
+Voxel_Object::~Voxel_Object() {}
 
 void Voxel_Object::_ready() {
   m_center_model =
@@ -22,56 +26,36 @@ void Voxel_Object::_ready() {
   }
 }
 
-void Voxel_Object::build_cube() {
-  // 1. Vertex positions (counter-clockwise winding = front-facing)
-  PackedVector3Array vertices;
-  for (int i = 0; i < M_VERT_COUNT; i += 3) {
-    vertices.push_back(get_vertice_coords(M_VERT_ORDER[i + 0]));
-    vertices.push_back(get_vertice_coords(M_VERT_ORDER[i + 1]));
-    vertices.push_back(get_vertice_coords(M_VERT_ORDER[i + 2]));
+void Voxel_Object::reserve_voxels(const size_t a_size) {
+  m_voxels.reserve(a_size);
+}
+
+void Voxel_Object::push_back_voxel(Voxel *a_voxel) {
+  m_voxels.push_back(a_voxel);
+}
+
+void Voxel_Object::set_voxel(const size_t a_index, Voxel *a_voxel) {
+  m_voxels[a_index] = a_voxel;
+}
+
+Voxel *Voxel_Object::get_voxel_ref(const size_t a_index) {
+  if (m_voxels.size() == 0) {
+    UtilityFunctions::push_warning(
+        "Voxel_object::get_voxel_ref: voxel vector is empty");
+    return nullptr;
   }
 
-  // 2. Normals - all face +Z so the flat triangle is lit from the front-facing
-  PackedVector3Array normals;
-  for (int i = 0; i < M_VERT_COUNT; i++) {
-    normals.push_back(Vector3(0.0, 0.0, 1.0));
+  if (a_index > m_voxels.size()) {
+    UtilityFunctions::push_warning(
+        "Voxel_Object::get_voxel_ref: a_index is too big!");
+    return nullptr;
   }
 
-  // 3. UVs (optional, for texturing)
-  PackedVector2Array uvs;
-  for (int i = 0; i < M_VERT_COUNT; i += 3) {
-    uvs.push_back(Vector2(0.5, 0.0));
-    uvs.push_back(Vector2(0.0, 1.0));
-    uvs.push_back(Vector2(1.0, 1.0));
-  }
+  return m_voxels[a_index];
+}
 
-  // 4. Vertex Colors (optional)
-  PackedColorArray colors;
-  for (int i = 0; i < M_VERT_COUNT; i += 3) {
-    colors.push_back(Color(1, 0, 0));
-    colors.push_back(Color(0, 1, 0));
-    colors.push_back(Color(0, 0, 1));
-  }
+int Voxel_Object::get_voxels_size() const { return m_voxels.size(); }
 
-  // 5. Pack into ARRAY_MAX-sized ARRAY_MAX-sized
-  Array arrays;
-  arrays.resize(Mesh::ARRAY_MAX);
-  arrays[Mesh::ARRAY_VERTEX] = vertices;
-  arrays[Mesh::ARRAY_NORMAL] = normals;
-  arrays[Mesh::ARRAY_TEX_UV] = uvs;
-  arrays[Mesh::ARRAY_COLOR] = colors;
-
-  // 6. Build the mesh surface
-  Ref<ArrayMesh> mesh;
-  mesh.instantiate();
-  mesh->add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, arrays);
-
-  // 7. Material so vertex colors show and its visible from both sides
-  Ref<StandardMaterial3D> material;
-  material.instantiate();
-  material->set_flag(BaseMaterial3D::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
-  material->set_cull_mode(BaseMaterial3D::CULL_BACK); // draw both faces
-  mesh->surface_set_material(0, material);
-
-  m_mesh_instance->set_mesh(mesh);
+void Voxel_Object::set_mesh_instance(Ref<ArrayMesh> a_mesh) {
+  m_mesh_instance->set_mesh(a_mesh);
 }
