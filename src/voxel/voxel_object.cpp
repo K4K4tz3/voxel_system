@@ -1,6 +1,7 @@
 #include "voxel_object.h"
 
 #include <godot_cpp/classes/mesh.hpp>
+#include <godot_cpp/classes/resource_loader.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 
 using namespace godot;
@@ -9,7 +10,17 @@ void Voxel_Object::_bind_methods() {
   ClassDB::bind_method(D_METHOD("build_cube"), &Voxel_Object::build_cube);
 }
 
-void Voxel_Object::_ready() {}
+void Voxel_Object::_ready() {
+  m_center_model =
+      ResourceLoader::get_singleton()->load("res://object_center_marker.glb");
+  if (m_center_model.is_null()) {
+    UtilityFunctions::push_error("Voxel_Generator: Debug Model cant be loaded");
+  } else {
+    Node3D *node = Object::cast_to<Node3D>(m_center_model->instantiate());
+
+    add_child(node);
+  }
+}
 
 void Voxel_Object::build_cube() {
   // 1. Vertex positions (counter-clockwise winding = front-facing)

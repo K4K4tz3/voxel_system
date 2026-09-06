@@ -10,6 +10,7 @@
 #include <godot_cpp/classes/array_mesh.hpp>
 #include <godot_cpp/classes/mesh_instance3d.hpp>
 #include <godot_cpp/classes/node3d.hpp>
+#include <godot_cpp/classes/packed_scene.hpp>
 #include <godot_cpp/classes/standard_material3d.hpp>
 
 namespace godot {
@@ -22,6 +23,8 @@ private:
   std::vector<Voxel *> m_voxels;
 
   std::unique_ptr<Voxel_Data> m_voxel_data = nullptr;
+
+  Ref<PackedScene> m_center_model;
 
   const PackedVector3Array M_VERTICES = {
       // front
