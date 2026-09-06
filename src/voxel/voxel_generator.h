@@ -3,6 +3,7 @@
 
 #include <godot_cpp/classes/node.hpp>
 
+#include "mesh_data.h"
 #include "voxel_data.h"
 #include "voxel_interactor.h"
 #include "voxel_object.h"
@@ -36,6 +37,8 @@ private:
 
   Node3D *_create_debug_ball(const int a_index);
   void _set_debug_ball_material(Node3D *&a_node, const int a_value);
+
+  void _create_voxel_body(Voxel *a_voxel, Mesh_Data &a_mesh_data);
 
 protected:
   static void _bind_methods();

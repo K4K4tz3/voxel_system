@@ -124,71 +124,33 @@ bool Voxel_Generator::generate_grid(Voxel_Object &a_object) {
     a_object.add_child(current->center);
     _set_debug_ball_material(current->center, m_test_voxel_structure[index]);
 
-    // top
-    // left -> neg x
-    // back -> neg z
-    // right -> x
-    // front -> z
-    // bot
     a_object.push_back_voxel(current);
     UtilityFunctions::print("Generated ", index, " voxel");
   }
-
-  // Node3D *instance = Object::cast_to<Node3D>(model->instantiate());
-  // UtilityFunctions::print("generated grid");
-  // instance->set_position(Vector3(0, 0, 0));
-  // add_child(instance);
 
   return true;
 }
 
 bool Voxel_Generator::generate_mesh_instance(Voxel_Object &a_object) {
   UtilityFunctions::print("Generating mesh");
-  Mesh_Data mesh_data;
+  Mesh_Data *mesh_data = new Mesh_Data();
 
-  Voxel *temp_voxel = a_object.get_voxel_ref(0);
-  if (temp_voxel == nullptr) {
-    UtilityFunctions::push_error("Temp_Voxel is empty");
-    return false;
-  }
-  // create vertices
-  mesh_data.vertices.push_back(temp_voxel->top());
-  mesh_data.vertices.push_back(temp_voxel->front());
-  mesh_data.vertices.push_back(temp_voxel->left());
-
-  // 2. Normals - all face +Z so the flat triangle is lit from the front-facing
-  for (int i = 0; i < 3; i++) {
-    mesh_data.normals.push_back(Vector3(0.0, 0.0, 1.0));
-  }
-
-  // 3. UVs (optional, for texturing)
-  for (int i = 0; i < 3; i += 3) {
-    mesh_data.uvs.push_back(Vector2(0.5, 0.0));
-    mesh_data.uvs.push_back(Vector2(0.0, 1.0));
-    mesh_data.uvs.push_back(Vector2(1.0, 1.0));
-  }
-
-  // 4. Vertex Colors (optional)
-  for (int i = 0; i < 3; i += 3) {
-    mesh_data.colors.push_back(Color(1, 0, 0));
-    mesh_data.colors.push_back(Color(0, 1, 0));
-    mesh_data.colors.push_back(Color(0, 0, 1));
-  }
+  _create_voxel_body(a_object.get_voxel_ref(0), *mesh_data);
 
   UtilityFunctions::print("Pack Mesh Data into Collection");
   // 5. Pack into ARRAY_MAX-sized ARRAY_MAX-sized
-  mesh_data.collection.resize(Mesh::ARRAY_MAX);
-  mesh_data.collection[Mesh::ARRAY_VERTEX] = mesh_data.vertices;
-  mesh_data.collection[Mesh::ARRAY_NORMAL] = mesh_data.normals;
-  mesh_data.collection[Mesh::ARRAY_TEX_UV] = mesh_data.uvs;
-  mesh_data.collection[Mesh::ARRAY_COLOR] = mesh_data.colors;
+  mesh_data->collection.resize(Mesh::ARRAY_MAX);
+  mesh_data->collection[Mesh::ARRAY_VERTEX] = mesh_data->vertices;
+  mesh_data->collection[Mesh::ARRAY_NORMAL] = mesh_data->normals;
+  mesh_data->collection[Mesh::ARRAY_TEX_UV] = mesh_data->uvs;
+  mesh_data->collection[Mesh::ARRAY_COLOR] = mesh_data->colors;
 
   UtilityFunctions::print("Build mesh surface");
   // 6. Build the mesh surface
   Ref<ArrayMesh> mesh;
   mesh.instantiate();
   mesh->add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES,
-                                mesh_data.collection);
+                                mesh_data->collection);
 
   UtilityFunctions::print("Instantiate mesh instance");
   // 7. Material so vertex colors show and its visible from both sides
@@ -230,5 +192,65 @@ void Voxel_Generator::_set_debug_ball_material(Node3D *&a_node,
     break;
   default:
     mesh->set_material_override(m_material_default);
+  }
+}
+
+void Voxel_Generator::_create_voxel_body(Voxel *a_voxel,
+                                         Mesh_Data &a_mesh_data) {
+  if (a_voxel == nullptr) {
+    UtilityFunctions::push_error("Temp_Voxel is empty");
+    return;
+  }
+  // create vertices
+  a_mesh_data.vertices.push_back(a_voxel->top());
+  a_mesh_data.vertices.push_back(a_voxel->front());
+  a_mesh_data.vertices.push_back(a_voxel->left());
+
+  a_mesh_data.vertices.push_back(a_voxel->top());
+  a_mesh_data.vertices.push_back(a_voxel->left());
+  a_mesh_data.vertices.push_back(a_voxel->back());
+
+  a_mesh_data.vertices.push_back(a_voxel->top());
+  a_mesh_data.vertices.push_back(a_voxel->back());
+  a_mesh_data.vertices.push_back(a_voxel->right());
+
+  a_mesh_data.vertices.push_back(a_voxel->top());
+  a_mesh_data.vertices.push_back(a_voxel->right());
+  a_mesh_data.vertices.push_back(a_voxel->front());
+
+  a_mesh_data.vertices.push_back(a_voxel->front());
+  a_mesh_data.vertices.push_back(a_voxel->bot());
+  a_mesh_data.vertices.push_back(a_voxel->left());
+
+  a_mesh_data.vertices.push_back(a_voxel->left());
+  a_mesh_data.vertices.push_back(a_voxel->bot());
+  a_mesh_data.vertices.push_back(a_voxel->back());
+
+  a_mesh_data.vertices.push_back(a_voxel->back());
+  a_mesh_data.vertices.push_back(a_voxel->bot());
+  a_mesh_data.vertices.push_back(a_voxel->right());
+
+  a_mesh_data.vertices.push_back(a_voxel->right());
+  a_mesh_data.vertices.push_back(a_voxel->bot());
+  a_mesh_data.vertices.push_back(a_voxel->front());
+
+  // 2. Nora_mals - all face +Z so the flat triangle is lit from the
+  // front-facing
+  for (int i = 0; i < 24; i++) {
+    a_mesh_data.normals.push_back(Vector3(0.0, 0.0, 1.0));
+  }
+
+  // 3. UVs (optional, for texturing)
+  for (int i = 0; i < 24; i += 3) {
+    a_mesh_data.uvs.push_back(Vector2(0.5, 0.0));
+    a_mesh_data.uvs.push_back(Vector2(0.0, 1.0));
+    a_mesh_data.uvs.push_back(Vector2(1.0, 1.0));
+  }
+
+  // 4. Vertex Colors (optional)
+  for (int i = 0; i < 24; i += 3) {
+    a_mesh_data.colors.push_back(Color(1, 0, 0));
+    a_mesh_data.colors.push_back(Color(0, 1, 0));
+    a_mesh_data.colors.push_back(Color(0, 0, 1));
   }
 }
