@@ -135,7 +135,9 @@ bool Voxel_Generator::generate_mesh_instance(Voxel_Object &a_object) {
   UtilityFunctions::print("Generating mesh");
   Mesh_Data *mesh_data = new Mesh_Data();
 
-  _create_voxel_body(a_object.get_voxel_ref(0), *mesh_data);
+  for (size_t i = 0; i < a_object.get_voxels_size(); i++)
+    if (m_test_voxel_structure[i] == 1)
+      _create_voxel_body(a_object.get_voxel_ref(i), *mesh_data);
 
   UtilityFunctions::print("Pack Mesh Data into Collection");
   // 5. Pack into ARRAY_MAX-sized ARRAY_MAX-sized
