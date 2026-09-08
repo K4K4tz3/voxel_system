@@ -131,6 +131,26 @@ bool Voxel_Generator::generate_grid(Voxel_Object &a_object) {
   return true;
 }
 
+bool Voxel_Generator::generate_grid(Voxel_Object &a_object,
+                                    std::vector<int> a_densities) {
+  const size_t grid_size = a_object.get_grid_size();
+
+  a_object.reserve_voxels(grid_size);
+
+  for (int index = 0; index < grid_size; index++) {
+    Voxel *current = new Voxel();
+    // instantiate debug ball at index
+    current->center = _create_debug_ball(index);
+    a_object.add_child(current->center);
+    _set_debug_ball_material(current->center, m_test_voxel_structure[index]);
+
+    a_object.push_back_voxel(current);
+    UtilityFunctions::print("Generated ", index, " voxel");
+  }
+
+  return true;
+}
+
 bool Voxel_Generator::generate_mesh_instance(Voxel_Object &a_object) {
   UtilityFunctions::print("Generating mesh");
   Mesh_Data *mesh_data = new Mesh_Data();

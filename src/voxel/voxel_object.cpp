@@ -6,7 +6,28 @@
 
 using namespace godot;
 
-void Voxel_Object::_bind_methods() {}
+void Voxel_Object::_bind_methods() {
+  ADD_GROUP("Grid", "m_grid_");
+
+  ClassDB::bind_method(D_METHOD("set_grid_width", "m_grid_width"),
+                       &Voxel_Object::set_grid_width);
+  ClassDB::bind_method(D_METHOD("get_grid_width"),
+                       &Voxel_Object::get_grid_width);
+  ADD_PROPERTY(PropertyInfo(Variant::INT, "m_grid_width"), "set_grid_width",
+               "get_grid_width");
+  ClassDB::bind_method(D_METHOD("set_grid_height", "m_grid_height"),
+                       &Voxel_Object::set_grid_height);
+  ClassDB::bind_method(D_METHOD("get_grid_height"),
+                       &Voxel_Object::get_grid_height);
+  ADD_PROPERTY(PropertyInfo(Variant::INT, "m_grid_height"), "set_grid_height",
+               "get_grid_height");
+  ClassDB::bind_method(D_METHOD("set_grid_depth", "m_grid_depth"),
+                       &Voxel_Object::set_grid_depth);
+  ClassDB::bind_method(D_METHOD("get_grid_depth"),
+                       &Voxel_Object::get_grid_depth);
+  ADD_PROPERTY(PropertyInfo(Variant::INT, "m_grid_depth"), "set_grid_depth",
+               "get_grid_depth");
+}
 
 Voxel_Object::Voxel_Object() {
   m_mesh_instance = memnew(MeshInstance3D);
@@ -55,6 +76,9 @@ Voxel *Voxel_Object::get_voxel_ref(const size_t a_index) {
 }
 
 int Voxel_Object::get_voxels_size() const { return m_voxels.size(); }
+int Voxel_Object::get_grid_size() const {
+  return (m_grid_width * m_grid_height * m_grid_depth);
+}
 
 void Voxel_Object::set_mesh_instance(Ref<ArrayMesh> a_mesh) {
   m_mesh_instance->set_mesh(a_mesh);

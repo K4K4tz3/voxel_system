@@ -1,0 +1,9 @@
+{
+  "name": "cube with no cornes",
+  "dimensions": {
+    "width": 3,
+    "height": 3,
+    "depth": 3
+  },
+  "densities": [ 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0]
+}

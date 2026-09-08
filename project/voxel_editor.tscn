@@ -47,7 +47,7 @@ alignment = 1
 
 [node name="Button_Call_Function" type="Button_Call_Function" parent="Voxel_Interactor/CanvasLayer/Control/VBoxContainer" unique_id=357730037]
 m_target_path = NodePath("../../../../../Voxel_Manager")
-m_function_name = &"create_object_and_generate_default"
+m_function_name = &"load_from_file"
 custom_minimum_size = Vector2(200, 70)
 layout_mode = 2
 texture_normal = SubResource("AtlasTexture_d335l")
@@ -106,3 +106,5 @@ m_voxel_size = 1783327264
 object_width = 3
 object_height = 3
 object_depth = 3
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=861586092]

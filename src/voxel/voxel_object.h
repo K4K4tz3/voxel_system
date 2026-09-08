@@ -19,8 +19,15 @@ class Voxel_Object : public Node3D {
   GDCLASS(Voxel_Object, Node3D)
 
 private:
-  MeshInstance3D *m_mesh_instance = nullptr;
+  String m_file_name;
+
+  int m_grid_width;
+  int m_grid_height;
+  int m_grid_depth;
+
   std::vector<Voxel *> m_voxels;
+
+  MeshInstance3D *m_mesh_instance = nullptr;
 
   std::unique_ptr<Voxel_Data> m_voxel_data = nullptr;
 
@@ -41,6 +48,16 @@ public:
   Voxel *get_voxel_ref(const size_t a_index);
   void set_mesh_instance(Ref<ArrayMesh> a_mesh);
   int get_voxels_size() const;
+  int get_grid_size() const;
+
+  void set_grid_width(const int &a_grid_width) { m_grid_width = a_grid_width; };
+  int get_grid_width() const { return m_grid_width; };
+  void set_grid_height(const int &a_grid_height) {
+    m_grid_height = a_grid_height;
+  };
+  int get_grid_height() const { return m_grid_height; };
+  void set_grid_depth(const int &a_grid_depth) { m_grid_depth = a_grid_depth; };
+  int get_grid_depth() const { return m_grid_depth; };
 };
 } // namespace godot
 
