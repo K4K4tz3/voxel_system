@@ -49,6 +49,8 @@ public:
   void set_mesh_instance(Ref<ArrayMesh> a_mesh);
   int get_voxels_size() const;
   int get_grid_size() const;
+  int get_index_from_vec_manipulation(const int a_inital_index,
+                                      const Vector3 a_manipulation) const;
 
   void set_grid_width(const int &a_grid_width) { m_grid_width = a_grid_width; };
   int get_grid_width() const { return m_grid_width; };

@@ -81,5 +81,29 @@ int Voxel_Object::get_grid_size() const {
 }
 
 void Voxel_Object::set_mesh_instance(Ref<ArrayMesh> a_mesh) {
+
   m_mesh_instance->set_mesh(a_mesh);
+}
+
+/**
+ * This function takes in a index and takes it as its origin, then with
+ * a_manipulation the new index gets calulated.
+ *
+ * @param1 int Index of relevant voxel
+ * @param2 Vector3 Manipulation value used on relevant voxel's origin
+ *
+ * WARN: Return value is not limited.
+ * -> Out of Bounds to be expected
+ * -> No limitation was set, as there was no real reason for it
+ *
+ */
+int Voxel_Object::get_index_from_vec_manipulation(
+    const int a_initial_index, const Vector3 a_manipulation) const {
+
+  int index_change = 0;
+  index_change += a_manipulation.x;
+  index_change += m_grid_width * a_manipulation.y;
+  index_change += m_grid_width * m_grid_height * a_manipulation.z;
+
+  return a_initial_index + index_change;
 }
