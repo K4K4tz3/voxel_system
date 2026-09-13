@@ -8,6 +8,8 @@
 #include "voxel_interactor.h"
 #include "voxel_object.h"
 
+#include <nlohmann/json.hpp>
+
 #include <godot_cpp/classes/material.hpp>
 #include <godot_cpp/classes/node3d.hpp>
 #include <godot_cpp/classes/packed_scene.hpp>
@@ -31,9 +33,13 @@ private:
   Ref<Material> m_material_default;
   Ref<Material> m_material_filled_voxel;
 
+  std::vector<nlohmann::json *> m_marching_cube_cases;
+
   const std::vector<int> m_test_voxel_structure{0, 1, 0, 1, 1, 1, 0, 1, 0,
                                                 1, 1, 1, 1, 1, 1, 1, 1, 1,
                                                 0, 1, 0, 1, 1, 1, 0, 1, 0};
+
+  bool _load_marching_cube_cases() const;
 
   Node3D *_create_debug_ball(const int a_index);
   void _set_debug_ball_material(Node3D *&a_node, const int a_value);

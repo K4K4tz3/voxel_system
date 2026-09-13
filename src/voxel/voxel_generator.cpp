@@ -1,14 +1,18 @@
 #include "voxel_generator.h"
-
 #include "mesh_data.h"
 #include "voxel.h"
 #include "voxel_object.h"
+
+#include <filesystem>
+#include <fstream>
 
 #include <godot_cpp/classes/mesh_instance3d.hpp>
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/node3d.hpp>
 #include <godot_cpp/classes/packed_scene.hpp>
+#include <godot_cpp/classes/project_settings.hpp>
 #include <godot_cpp/classes/resource_loader.hpp>
+#include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/node_path.hpp>
 
@@ -100,6 +104,15 @@ void Voxel_Generator::_ready() {
     UtilityFunctions::push_error(
         "Voxel_Generator: Filled Voxel Debug Material cant be loaded");
   }
+
+  if (!_load_marching_cube_cases()) {
+    UtilityFunctions::push_error("Voxel_Generator::loading_failure: Failed at "
+                                 "loading marching cube cases...");
+    UtilityFunctions::push_error("System can't progress without successfull "
+                                 "loaded cases and is thereby stopping...");
+
+    get_tree()->quit();
+  }
 }
 
 /**
@@ -187,7 +200,6 @@ bool Voxel_Generator::generate_mesh_instance(Voxel_Object &a_object) {
   UtilityFunctions::print("Finished generating mesh instance");
   return true;
 }
-
 Node3D *Voxel_Generator::_create_debug_ball(int a_index) {
   Node3D *node = Object::cast_to<Node3D>(m_debug_model->instantiate());
 
@@ -275,4 +287,61 @@ void Voxel_Generator::_create_voxel_body(Voxel *a_voxel,
     a_mesh_data.colors.push_back(Color(0, 1, 0));
     a_mesh_data.colors.push_back(Color(0, 0, 1));
   }
+}
+
+void Voxel_Generator::_find_marching_case(const int a_index) {
+  // 1. get 7 remaining voxels
+  // 2. get possible case's by full_voxel count
+  // 3. find correct case with correctio orientation
+  // 4. return case's vertices with orientation
+}
+
+bool Voxel_Generator::_load_marching_cube_cases() const {
+  bool success_state = true;
+  size_t successful_loads = 0;
+
+  String cases_dir_path = ProjectSettings::get_singleton()->globalize_path(
+      "res://marching-cubes_cases/");
+
+  // NOTE: Do not break for loop for one file...
+  // Save and continue, thereby we get the states for all present files
+  for (const auto &entry :
+       std::filesystem::directory_iterator(cases_dir_path.utf8().get_data())) {
+    if (entry.path().filename() == "template.json") {
+      continue;
+    }
+
+    UtilityFunctions::print("Voxel_Generator::load_mc_cases: ",
+                            entry.path().filename().c_str());
+
+    // 1. load json
+    std::ifstream file(entry.path());
+    if (!file.is_open()) {
+      UtilityFunctions::push_error("Voxel_Generator::load_mc_cases: FAILED..");
+      UtilityFunctions::push_warning("Failed to load [",
+                                     entry.path().filename().c_str(), "]");
+
+      success_state = false;
+      continue;
+    }
+
+    // 2. parse and check file
+    nlohmann::json data = nlohmann::json::parse(file, nullptr, false);
+    if (data.is_discarded()) {
+      UtilityFunctions::push_warning(
+          "Voxel_Generator::load_mc_cases: Failed to parse json file");
+
+      success_state = false;
+      continue;
+    }
+
+    successful_loads++;
+  }
+
+  UtilityFunctions::print("Voxel_Generator::load_mc_cases: Finished Succesful");
+  UtilityFunctions::print(
+      "[", successful_loads, "] case", (successful_loads > 1 ? "s" : ""),
+      (successful_loads > 1 ? " are " : " is "), "now ready to be used.");
+
+  return success_state;
 }
