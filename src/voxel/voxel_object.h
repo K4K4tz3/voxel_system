@@ -25,10 +25,11 @@ private:
   int m_grid_height;
   int m_grid_depth;
 
-  std::vector<Voxel *> m_voxels;
+  std::vector<int> *m_voxel_densities;
 
   MeshInstance3D *m_mesh_instance = nullptr;
 
+  // TODO: redo density storage with smaller type
   std::unique_ptr<Voxel_Data> m_voxel_data = nullptr;
 
   Ref<PackedScene> m_center_model;
@@ -43,9 +44,9 @@ public:
   void _ready() override;
 
   void reserve_voxels(const size_t a_size);
-  void push_back_voxel(Voxel *a_voxel);
-  void set_voxel(const size_t a_index, Voxel *a_voxel);
-  Voxel *get_voxel_ref(const size_t a_index);
+  void set_densities(std::vector<int> &a_densities);
+  std::vector<int> &get_density_ref();
+
   void set_mesh_instance(Ref<ArrayMesh> a_mesh);
   int get_voxels_size() const;
   int get_grid_size() const;

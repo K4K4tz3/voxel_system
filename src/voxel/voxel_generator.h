@@ -46,7 +46,7 @@ private:
   void _set_debug_ball_material(Node3D *&a_node, const int a_value);
 
   void _create_voxel_body(Voxel *a_voxel, Mesh_Data &a_mesh_data);
-  void _find_marching_case(const int a_index);
+  void _find_marching_case(Voxel_Object &a_object, const int a_index);
 
 protected:
   static void _bind_methods();
@@ -57,8 +57,7 @@ public:
 
   void _ready() override;
 
-  bool generate_grid(Voxel_Object &a_object);
-  bool generate_grid(Voxel_Object &a_object, std::vector<int> a_densities);
+  bool generate_debug_grid(Voxel_Object &a_object);
   bool generate_mesh_instance(Voxel_Object &a_object);
 
   //

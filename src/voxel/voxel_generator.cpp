@@ -126,11 +126,9 @@ void Voxel_Generator::_ready() {
  * left empty, an empty grid gets generated.
  * @return State of success
  */
-bool Voxel_Generator::generate_grid(Voxel_Object &a_object) {
+bool Voxel_Generator::generate_debug_grid(Voxel_Object &a_object) {
   const size_t grid_size = m_object_width * m_object_height * m_object_depth;
 
-  a_object.reserve_voxels(grid_size);
-
   for (int index = 0; index < grid_size; index++) {
     Voxel *current = new Voxel();
     // instantiate debug ball at index
@@ -138,27 +136,8 @@ bool Voxel_Generator::generate_grid(Voxel_Object &a_object) {
     a_object.add_child(current->center);
     _set_debug_ball_material(current->center, m_test_voxel_structure[index]);
 
-    a_object.push_back_voxel(current);
-    UtilityFunctions::print("Generated ", index, " voxel");
-  }
-
-  return true;
-}
-
-bool Voxel_Generator::generate_grid(Voxel_Object &a_object,
-                                    std::vector<int> a_densities) {
-  const size_t grid_size = a_object.get_grid_size();
-
-  a_object.reserve_voxels(grid_size);
-
-  for (int index = 0; index < grid_size; index++) {
-    Voxel *current = new Voxel();
-    // instantiate debug ball at index
-    current->center = _create_debug_ball(index);
-    a_object.add_child(current->center);
-    _set_debug_ball_material(current->center, m_test_voxel_structure[index]);
-
-    a_object.push_back_voxel(current);
+    // TODO: add debug vector
+    // a_object.push_back_voxel(current);
     UtilityFunctions::print("Generated ", index, " voxel");
   }
 
@@ -169,9 +148,8 @@ bool Voxel_Generator::generate_mesh_instance(Voxel_Object &a_object) {
   UtilityFunctions::print("Generating mesh");
   Mesh_Data *mesh_data = new Mesh_Data();
 
-  for (size_t i = 0; i < a_object.get_voxels_size(); i++)
-    if (m_test_voxel_structure[i] == 1)
-      _create_voxel_body(a_object.get_voxel_ref(i), *mesh_data);
+  // for (size_t i = 0; i < a_object.get_voxels_size(); i++)
+  //   _find_marching_case(a_object.get_byte_representation_at(i));
 
   UtilityFunctions::print("Pack Mesh Data into Collection");
   // 5. Pack into ARRAY_MAX-sized ARRAY_MAX-sized
@@ -290,8 +268,27 @@ void Voxel_Generator::_create_voxel_body(Voxel *a_voxel,
   }
 }
 
-void Voxel_Generator::_find_marching_case(const int a_index) {
-  // 1. get 7 remaining voxels
+/**
+ * Takes in a index of
+ *
+ * NOTE: Order of general direction
+ * 1. wide - x positve
+ * 2. high - y positive
+ * 3. deep - z positive
+ */
+void Voxel_Generator::_find_marching_case(Voxel_Object &a_object,
+                                          const int a_index) {
+  // 1. get voxel densities in OGD
+  // std::uint8_t density_byte =
+  //   ((a_object.get << 0) |
+  //   (() << 1) |
+  //   (() << 2) |
+  //   (() << 3) |
+  //   (() << 4) |
+  //   (() << 5) |
+  //   (() << 6) |
+  //   (() << 7);
+
   // 2. get possible case's by full_voxel count
   // 3. find correct case with correctio orientation
   // 4. return case's vertices with orientation
@@ -347,6 +344,7 @@ bool Voxel_Generator::_load_marching_cube_cases() {
                     data["ignore_count"].get<bool>(), vertices);
 
     m_marching_cube_cases.push_back(current_case);
+    // TODO: add remaining cases
 
     successful_loads++;
   }

@@ -76,7 +76,7 @@ bool Voxel_Manager::create_object_and_generate_default() {
   }
   add_child(object);
 
-  if (!m_generator->generate_grid(*object)) {
+  if (!m_generator->generate_debug_grid(*object)) {
     UtilityFunctions::push_warning("Voxel_Generator: Failed to generate_grid");
     return false;
   }
@@ -118,14 +118,19 @@ bool Voxel_Manager::load_from_file() {
 
   // 3. create voxel_object and set it based on json
   Voxel_Object *voxel_object = memnew(Voxel_Object);
+
   voxel_object->set_grid_width(data["dimensions"]["width"].get<int>());
   voxel_object->set_grid_height(data["dimensions"]["height"].get<int>());
   voxel_object->set_grid_depth(data["dimensions"]["depth"].get<int>());
+
+  std::vector<int> *densities =
+      new std::vector(data["densities"].get<std::vector<int>>());
+  voxel_object->set_densities(*densities);
   add_child(voxel_object);
 
-  //  3. generate voxel grid
-  m_generator->generate_grid(*voxel_object,
-                             data["densities"].get<std::vector<int>>());
+  //  3. generate debug grid
+  m_generator->generate_debug_grid(*voxel_object);
+
   //  4. generate mesh
   m_generator->generate_mesh_instance(*voxel_object);
 

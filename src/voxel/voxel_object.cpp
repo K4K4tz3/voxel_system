@@ -48,34 +48,24 @@ void Voxel_Object::_ready() {
 }
 
 void Voxel_Object::reserve_voxels(const size_t a_size) {
-  m_voxels.reserve(a_size);
+  m_voxel_densities->reserve(a_size);
 }
 
-void Voxel_Object::push_back_voxel(Voxel *a_voxel) {
-  m_voxels.push_back(a_voxel);
+void Voxel_Object::set_densities(std::vector<int> &a_densities) {
+  m_voxel_densities = &a_densities;
 }
 
-void Voxel_Object::set_voxel(const size_t a_index, Voxel *a_voxel) {
-  m_voxels[a_index] = a_voxel;
-}
-
-Voxel *Voxel_Object::get_voxel_ref(const size_t a_index) {
-  if (m_voxels.size() == 0) {
+int Voxel_Object::get_voxels_size() const {
+  if (m_voxel_densities == nullptr) {
     UtilityFunctions::push_warning(
-        "Voxel_object::get_voxel_ref: voxel vector is empty");
-    return nullptr;
+        "Voxel_Object::get_voxels_size: m_voxel_densities is null");
+    return -1;
   }
-
-  if (a_index > m_voxels.size()) {
-    UtilityFunctions::push_warning(
-        "Voxel_Object::get_voxel_ref: a_index is too big!");
-    return nullptr;
-  }
-
-  return m_voxels[a_index];
+  return m_voxel_densities->size();
 }
 
-int Voxel_Object::get_voxels_size() const { return m_voxels.size(); }
+std::vector<int> &Voxel_Object::get_density_ref() { return *m_voxel_densities; }
+
 int Voxel_Object::get_grid_size() const {
   return (m_grid_width * m_grid_height * m_grid_depth);
 }
@@ -86,10 +76,10 @@ void Voxel_Object::set_mesh_instance(Ref<ArrayMesh> a_mesh) {
 }
 
 /**
- * This function takes in a index and takes it as its origin, then with
+ * @brief This function takes in a index and takes it as its origin, then with
  * a_manipulation the new index gets calulated.
  *
- * @param1 int Index of relevant voxel
+ * @param a_index The index of the relevant voxel.
  * @param2 Vector3 Manipulation value used on relevant voxel's origin
  *
  * WARN: Return value is not limited.
