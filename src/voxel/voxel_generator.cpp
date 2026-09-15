@@ -1,6 +1,7 @@
 #include "voxel_generator.h"
 #include "mesh_data.h"
 #include "voxel.h"
+#include "voxel_frame.h"
 #include "voxel_object.h"
 
 #include <filesystem>
@@ -296,7 +297,7 @@ void Voxel_Generator::_find_marching_case(const int a_index) {
   // 4. return case's vertices with orientation
 }
 
-bool Voxel_Generator::_load_marching_cube_cases() const {
+bool Voxel_Generator::_load_marching_cube_cases() {
   bool success_state = true;
   size_t successful_loads = 0;
 
@@ -334,6 +335,18 @@ bool Voxel_Generator::_load_marching_cube_cases() const {
       success_state = false;
       continue;
     }
+
+    // 3. create case from json
+    std::vector<std::string> vertices;
+    for (auto &vert : data["vertices"]) {
+      std::string chars = vert.get<std::string>();
+      vertices.push_back(chars);
+    }
+    MC_Case *current_case =
+        new MC_Case(data["filled_voxels"].get<int>(),
+                    data["ignore_count"].get<bool>(), vertices);
+
+    m_marching_cube_cases.push_back(current_case);
 
     successful_loads++;
   }

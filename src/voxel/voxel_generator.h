@@ -3,6 +3,7 @@
 
 #include <godot_cpp/classes/node.hpp>
 
+#include "mc_case.h"
 #include "mesh_data.h"
 #include "voxel_data.h"
 #include "voxel_interactor.h"
@@ -33,18 +34,19 @@ private:
   Ref<Material> m_material_default;
   Ref<Material> m_material_filled_voxel;
 
-  std::vector<nlohmann::json *> m_marching_cube_cases;
+  std::vector<MC_Case *> m_marching_cube_cases;
 
   const std::vector<int> m_test_voxel_structure{0, 1, 0, 1, 1, 1, 0, 1, 0,
                                                 1, 1, 1, 1, 1, 1, 1, 1, 1,
                                                 0, 1, 0, 1, 1, 1, 0, 1, 0};
 
-  bool _load_marching_cube_cases() const;
+  bool _load_marching_cube_cases();
 
   Node3D *_create_debug_ball(const int a_index);
   void _set_debug_ball_material(Node3D *&a_node, const int a_value);
 
   void _create_voxel_body(Voxel *a_voxel, Mesh_Data &a_mesh_data);
+  void _find_marching_case(const int a_index);
 
 protected:
   static void _bind_methods();
