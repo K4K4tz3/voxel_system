@@ -12,13 +12,27 @@ env = SConscript("godot-cpp/SConstruct")
 env.Append(CPPPATH=["src/"])
 
 # Collects all .cpp files in the 'src' folder as compile targets.
-sources = []
+glob_sources = []
 
 for root, dirs, files in os.walk("src"):
     for file in files:
         print(f"Adding: {file}")
         if file.endswith(".cpp"):
-            sources.append(os.path.join(root, file))
+            glob_sources.append(os.path.join(root, file))
+
+test_sources = Glob("tests/*.cpp")
+
+test_env = env.Clone()
+
+test_env.Append(CPPPATH=["src", "src/voxel/", "godot-cpp/include/", "godot-cpp/gen/include", "godot-cpp/gdextension"],CXXFLAGS=["-g", "-O0"])
+
+test_env.Program(
+        target="bin/tests",
+        source=test_sources + glob_sources
+        )
+
+print("TEST CXXFLAGS:", test_env.get("CXXFLAGS"))
+print("TEST CCFLAGS:", test_env.get("CCFLAGS"))
 
 # The filename for the dynamic library for this GDExtension.
 # $SHLIBPREFIX is a platform specific prefix for the dynamic library ('lib' on Unix, '' on Windows).
@@ -31,7 +45,7 @@ lib_filename = "{}gdexample{}{}".format(env.subst('$SHLIBPREFIX'), env["suffix"]
 # Creates a SCons target for the path with our sources.
 library = env.SharedLibrary(
     "project/bin/{}".format(lib_filename),
-    source=sources,
+    source=glob_sources,
 )
 
 # Selects the shared library as the default target.

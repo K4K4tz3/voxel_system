@@ -12,3 +12,5 @@ project/bin/*.uid
 project/bin/*.so
 /compile_commands.json
 /.sconsign.dblite
+/bin
+/a.out
