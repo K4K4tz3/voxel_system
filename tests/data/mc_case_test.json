@@ -1,0 +1,10 @@
+{
+  "name": "Example Case",
+
+  "filled_voxels": 2,
+  "ignore_count": false,
+  "tri_count": 2,
+
+  "byte_representations": [ "11000000"],
+  "vertices_default": []
+}

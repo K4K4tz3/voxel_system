@@ -5,6 +5,7 @@
   "ignore_count": true,
   "tri_count": 8,
 
+  "byte_representations": [ "00000000"],
   "vertices": [ 
     "tm", "rm", "fm",
     "tm", "fm", "lm",

@@ -5,5 +5,6 @@
   "ignore_count": false,
   "tri_count": -1,
 
-  "vertices": []
+  "byte_representations": [ "00000000"],
+  "vertices_default": []
 }

@@ -4,8 +4,10 @@
 #include "voxel_frame.h"
 #include "voxel_object.h"
 
+#include <bitset>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 
 #include <godot_cpp/classes/mesh_instance3d.hpp>
 #include <godot_cpp/classes/node.hpp>
@@ -113,6 +115,9 @@ void Voxel_Generator::_ready() {
                                  "loaded cases and is thereby stopping...");
 
     get_tree()->quit();
+  } else {
+    UtilityFunctions::print("Voxel_Generator::loaded_marching-cube_cases: [",
+                            m_marching_cube_cases.size(), "]");
   }
 }
 
@@ -333,26 +338,45 @@ bool Voxel_Generator::_load_marching_cube_cases() {
       continue;
     }
 
-    // 3. create case from json
-    std::vector<std::string> vertices;
-    for (auto &vert : data["vertices"]) {
-      std::string chars = vert.get<std::string>();
-      vertices.push_back(chars);
-    }
-    MC_Case *current_case =
-        new MC_Case(data["filled_voxels"].get<int>(),
-                    data["ignore_count"].get<bool>(), vertices);
-
-    m_marching_cube_cases.push_back(current_case);
+    m_marching_cube_cases.push_back(parse_mc_case(data));
     // TODO: add remaining cases
 
     successful_loads++;
   }
 
   UtilityFunctions::print("Voxel_Generator::load_mc_cases: Finished Succesful");
-  UtilityFunctions::print(
-      "[", successful_loads, "] case", (successful_loads > 1 ? "s" : ""),
-      (successful_loads > 1 ? " are " : " is "), "now ready to be used.");
 
   return success_state;
+}
+
+/**
+ * @brief Format fetched json data into a marchingcubes_case.
+ *
+ * @param a_data Context that has to be formatted
+ *
+ * @return MC_Case
+ */
+MC_Case *Voxel_Generator::parse_mc_case(nlohmann::json a_data) {
+  std::vector<std::string> vertices;
+  std::cout << "create verts" << std::flush;
+  for (auto &vert : a_data["vertices"]) {
+    std::string chars = vert.get<std::string>();
+    vertices.push_back(chars);
+  }
+  std::cout << "create case" << std::flush;
+
+  // cast byte_rep from string to uint8_t;
+  std::vector<std::string> bytes_unhandled =
+      a_data["byte_representations"].get<std::vector<std::string>>();
+  std::vector<std::uint8_t> byte_reps(bytes_unhandled.size());
+  for (size_t i = 0; i < bytes_unhandled.size(); i++)
+    byte_reps[i] =
+        static_cast<uint8_t>(std::bitset<8>(bytes_unhandled[i]).to_ulong());
+
+  MC_Case *current_case =
+      new MC_Case(a_data["filled_voxels"].get<int>(),
+                  a_data["ignore_count"].get<bool>(), byte_reps, vertices);
+
+  std::cout << "return" << std::flush;
+  return current_case;
 }

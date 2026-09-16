@@ -56,6 +56,7 @@ public:
   ~Voxel_Generator();
 
   void _ready() override;
+  static MC_Case *parse_mc_case(nlohmann::json a_data);
 
   bool generate_debug_grid(Voxel_Object &a_object);
   bool generate_mesh_instance(Voxel_Object &a_object);
