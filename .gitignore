@@ -1,5 +1,10 @@
 src/*.os
+src/*.o
 src/**/*.os
+src/**/*.o
+
+tests/*.o
+
 .godot/
 /android/
 
