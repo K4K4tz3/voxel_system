@@ -1,5 +1,7 @@
 #include "register_types.h"
 
+#include "../tests/godot/test_runner.h"
+
 #include "ui/button_call_function.h"
 
 #include "voxel/voxel_generator.h"
@@ -24,6 +26,7 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
   GDREGISTER_CLASS(Voxel_Interactor);
   GDREGISTER_CLASS(Voxel_Generator);
   GDREGISTER_CLASS(Voxel_Object);
+  GDREGISTER_CLASS(Test_Runner);
 }
 
 void uninitialize_example_module(ModuleInitializationLevel p_level) {

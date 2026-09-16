@@ -8,6 +8,7 @@
 
 #include "../src/voxel/mc_case.h"
 #include "../src/voxel/voxel_generator.h"
+#include "../src/voxel/voxel_manager.h"
 
 #include <godot_cpp/classes/project_settings.hpp>
 #include <godot_cpp/variant/string.hpp>
@@ -43,3 +44,4 @@ TEST_CASE("Parse Checking") {
   CHECK(mc_case->get_byte_rep(0) == 0b11000000);
 }
 } // namespace godot
+  //
