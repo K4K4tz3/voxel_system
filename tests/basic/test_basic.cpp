@@ -43,5 +43,19 @@ TEST_CASE("Parse Checking") {
   CHECK(mc_case->get_filled_voxels() == 2);
   CHECK(mc_case->get_byte_rep(0) == 0b11000000);
 }
+
+// TEST_CASE("Byte representation creation at certain index") {
+//   std::cout << "Create Object\n";
+//   Voxel_Manager manager;
+//   std::cout << "Load file\n";
+//   manager.load_from_file(true);
+//
+//   std::cout << "Get Object from Manager\n";
+//   Voxel_Object &object = manager.get_object_ref(0);
+//
+//   std::cout << "Get byte rep at pos from Object\n";
+//   std::uint8_t default_pos = object.get_byte_rep_at(0);
+//   CHECK(default_pos == 0b00000000);
+// }
 } // namespace godot
   //

@@ -4,7 +4,12 @@ src/**/*.os
 src/**/*.o
 
 tests/*.o
+tests/**/*.o
 tests/**/*.os
+
+build/tests/src/*.o
+build/tests/**/*.o
+build/tests/src/**/*.os
 
 .godot/
 /android/
