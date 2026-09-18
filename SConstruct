@@ -6,30 +6,27 @@ import sys
 # https://scons.org/documentation.html
 
 
+
+
+def get_all_cpp_in(dir):
+    sources = []
+    for root, dirs, files in os.walk(dir):
+        for file in files:
+            print(f"Adding: {file}")
+            if file.endswith(".cpp"):
+                sources.append(os.path.join(root, file))
+    return sources
+
+
+
+
 #
 # REGION: Sources
 #
-project_sources = []
-for root, dirs, files in os.walk("src"):
-    for file in files:
-        print(f"Adding: {file}")
-        if file.endswith(".cpp"):
-            project_sources.append(os.path.join(root, file))
 
+project_sources = get_all_cpp_in("src")
 test_normal_sources = Glob("tests/basic/*.cpp")
 test_godot_sources = Glob("tests/godot/*.cpp")
-
-print("Project sources")
-for source in project_sources:
-    print("  ", source)
-
-VariantDir(
-        "build/tests",
-        "src",
-        duplicate=False,
-        )
-
-test_env_sources = Glob("build/tests/**/*.cpp")
 
 
 
@@ -38,19 +35,49 @@ test_env_sources = Glob("build/tests/**/*.cpp")
 #
 
 # This lets SCons know that we're using godot-cpp, from the godot-cpp folder.
-
 env = SConscript("godot-cpp/SConstruct")
 
 # Configures the 'src' directory as a source for header files.
 env.Append(CPPPATH=["src/"])
+
+VariantDir(
+        "build/tests",
+        "src",
+        duplicate=False,
+        )
+
+
 test_env = env.Clone()
 
-test_env.Append(CPPPATH=["src", "src/voxel/", "godot-cpp/include/", "godot-cpp/gen/include", "godot-cpp/gdextension"],CXXFLAGS=["-g", "-O0"])
+test_env.Append(CPPPATH=[
+    "src",
+    "godot-cpp/include/",
+    "godot-cpp/gen/include",
+    "godot-cpp/gdextension"
+    ],
+    CXXFLAGS=[
+        "-g",
+        "-O0"
+        ])
 
-test_env.Program(
-        target="bin/tests",
-        source=test_env_sources + project_sources + test_normal_sources,
-        )
+test_env.Append(CPPDEFINES=["UNIT_TEST_BUILD"])
+
+test_objects = []
+for source in project_sources:
+    relative = os.path.relpath(
+            source,
+            "src"
+            )
+
+    object_target = os.path.join(
+            "build/tests", 
+            os.path.splitext(relative)[0]
+            )
+
+    test_objects += test_env.Object(
+            target=object_target,
+            source=source,
+            )
 
 print("TEST CXXFLAGS:", test_env.get("CXXFLAGS"))
 print("TEST CCFLAGS:", test_env.get("CCFLAGS"))
@@ -68,6 +95,11 @@ library = env.SharedLibrary(
     "project/bin/{}".format(lib_filename),
     source=project_sources + test_godot_sources,
 )
+
+test_env.Program(
+        target="bin/tests",
+        source=test_objects + test_normal_sources,
+        )
 
 # Selects the shared library as the default target.
 Default(library)

@@ -26,7 +26,10 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
   GDREGISTER_CLASS(Voxel_Interactor);
   GDREGISTER_CLASS(Voxel_Generator);
   GDREGISTER_CLASS(Voxel_Object);
+
+#ifndef UNIT_TEST_BUILD
   GDREGISTER_CLASS(Test_Runner);
+#endif
 }
 
 void uninitialize_example_module(ModuleInitializationLevel p_level) {
